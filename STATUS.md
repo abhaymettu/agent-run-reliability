@@ -1,6 +1,6 @@
 # Status
 
-Last updated 2026-09-04 00:50 EDT.
+Last updated 2026-09-04 01:30 EDT.
 
 ## What this is
 
@@ -12,49 +12,57 @@ apparatus, `REPORT.md` will hold the findings.
 
 ## Where it stands
 
-Built and verified:
+The harness, the validator and the analysis are built and verified. The first
+battery has been run to completion, 384 runs, and it hit a ceiling that makes it
+useless for the question. A harder battery is being authored to replace it.
 
-- 24 tasks in four categories of six, all passing `tools/validate_tasks.py`.
-- `harness/run_grid.py`, the concurrent subprocess runner, with append-and-fsync
-  checkpointing and resume-by-skipping-completed-cells.
-- `analysis/analyze.py` and `analysis/selftest.py`, standard library only, three
-  synthetic scenarios recovering known variance components.
+## Battery v1 hit the ceiling
 
-Not done:
+384 runs, 24 tasks x 2 models x 8 occasions, complete and balanced, 00:51 to
+01:24 EDT, no timeouts and no harness errors. sonnet passed 190 of 192 (0.990),
+haiku 183 of 192 (0.953). Twenty of the twenty-four tasks were passed by both
+models on all eight occasions, and only one task, arith_running_balance,
+separated them at all.
 
-- The 384-run grid. It has not produced a usable record yet.
-- The analysis run, `REPORT.md`, and the final numbers.
+At that pass rate there is essentially no variance to decompose. Every
+component estimate would be near zero and the D-study would be reporting noise
+about noise. The data is kept in `results/battery_v1/` with a note, because the
+ceiling is itself a measurement worth reporting: a task set assembled to look
+reasonable landed far above the range where a pass/fail evaluation carries any
+reliability information.
 
-## The pilot that was discarded
+## Battery v2, in progress
 
-The grid was launched at 00:38 and killed at 00:47 after 59 runs. A session
-hook on the host machine writes a hidden `.remember/` directory into the
-working directory of every `claude -p` subject session. Four of the six
-`chore_*` tasks enumerate the whole working tree, so that directory appeared in
-their end state and their checkers rejected correct agent work. Those four
-tasks scored zero across both models for that reason alone.
+`docs/DIFFICULTY.md` states the target band, a pass rate of roughly 0.3 to 0.8
+per task per model, and the levers that reach it without introducing ambiguity:
+sequential state whose trajectory depends on a guard, interacting rules with a
+stated precedence, edge cases planted in the generated data so a plausible first
+implementation is wrong. The model is arith_running_balance, the one v1 task
+that discriminated.
 
-The tasks are being changed to ignore dot-prefixed paths, in the checkers, in
-the reference solutions, and in the prompts. Because the instrument changed, the
-59 runs collected before the change are discarded rather than pooled with what
-follows; they sit in `results/discarded/` with a note. The grid restarts from
-zero.
+Twenty-four replacement tasks are being written into `tasks_v2/`, six per
+category. Each must pass `tools/validate_tasks.py --tasks-dir tasks_v2`, and
+each author must additionally show that the naive implementation they designed
+the task to punish is in fact rejected by the checker.
 
-`tools/validate_tasks.py` is being extended to plant a fake `.remember/`
-directory and assert that a solved working directory still passes, so this
-failure mode cannot return silently.
+Once they validate, a one-occasion calibration pilot over all 48 cells measures
+where the difficulty actually landed before the full grid is committed to.
 
-Two facts from the pilot are worth keeping. Pass rates over its first 41 runs
-were 18/22 for sonnet and 15/19 for haiku, far enough off ceiling that the
-battery carries reliability information. Per-run wall time ranged from about 8
-to about 236 seconds, and 59 runs completed in 9 minutes at concurrency 4, so
-the full grid is comfortably inside the time budget.
+## Earlier: the discarded pilot
+
+An earlier 59-run pilot was discarded because a session hook on the host writes
+a hidden `.remember/` directory into every working directory, and four chore
+checkers rejected correct work because of it. The tasks now ignore dot-prefixed
+paths and `tools/validate_tasks.py` plants the directory and asserts a solved
+workdir still passes. Those runs are in `results/discarded/`.
 
 ## Next
 
-1. Finish and verify the dot-path fix across all affected tasks.
-2. Restart the full grid, 24 x 2 x 8.
-3. Run the analysis, write `REPORT.md`.
+1. Validate the twenty-four v2 tasks.
+2. Calibration pilot, one occasion per cell, to check the difficulty landed in
+   band.
+3. Full grid, 24 x 2 x 8.
+4. Analysis, then `REPORT.md`.
 
 ## Known limitations, to be stated in the report
 
