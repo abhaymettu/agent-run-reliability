@@ -12,6 +12,7 @@ after every run.
     timed_out     bool
     check_exit    int    check.py exit status
     check_msg     str    check.py stdout, first line, truncated to 300 chars
+    max_turns_cap int    the --max-turns budget the subject was given
     num_turns     int    from claude --output-format json, -1 if unavailable
     cost_usd      float  from claude --output-format json, 0.0 if unavailable
     session_id    str    from claude --output-format json, "" if unavailable

@@ -1,0 +1,38 @@
+The current directory contains a directory tree named "inbox/" (and nothing
+else of note). Ignore any file or directory anywhere whose name begins with
+a dot; it is not part of this task.
+
+Every file inside "inbox/" starts with a first line that is exactly
+"ARCHIVE: yes" or exactly "ARCHIVE: no".
+
+1. For every file whose first line is "ARCHIVE: yes", move it (do not copy;
+   the original must no longer exist afterward) into a top-level directory
+   named "archive/" (create it if needed), directly inside "archive/" (not
+   nested), keeping its original file name and its full original content
+   unchanged, including the "ARCHIVE: yes" line.
+
+2. After moving those files out, clean up "inbox/": remove any directory
+   under "inbox/" (at any depth) that, as a result of step 1, no longer
+   contains any file anywhere in its own subtree. Apply this recursively:
+   if removing a directory's last file causes its parent to also lose its
+   last remaining file, remove the parent too, and so on up the chain. Do
+   this only for directories that contained at least one file (anywhere in
+   their subtree) before step 1 -- a directory that already contained no
+   files at all before step 1 must be left exactly as it is, even though it
+   looks empty both before and after. Never remove "inbox/" itself.
+
+   A directory that still contains at least one file anywhere in its
+   subtree (whether or not that file was moved) must be left in place,
+   unpruned.
+
+3. Every file whose first line is "ARCHIVE: no" must remain at its original
+   path, byte-for-byte unchanged.
+
+4. Write "archive_manifest.txt" in the current directory: one line per
+   archived file, sorted alphabetically by its original path (relative to
+   the current directory, "/"-separated, no leading "./"), in the form:
+
+       <original_relative_path> -> archive/<basename>
+
+   End the file with a trailing newline. Do not include a line for any file
+   that was not archived.

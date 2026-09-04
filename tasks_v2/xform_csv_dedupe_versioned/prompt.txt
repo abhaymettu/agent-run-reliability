@@ -1,0 +1,14 @@
+You are given records.csv in this directory, with header
+"key,version,seq,payload". Multiple rows can share the same key,
+representing different revisions of the same record. Rows are NOT sorted
+by key or by version — they appear in arbitrary file order.
+
+For each distinct key, keep exactly one row: the one with the highest
+"version" value. If two or more rows for the same key share the highest
+version (a tie), keep the one with the highest "seq" value among those
+tied rows.
+
+Write the surviving rows to deduped.csv with header
+"key,version,seq,payload", one row per distinct key, sorted by key
+ascending (plain string sort). Do not quote any field. version and seq are
+written as plain integers.

@@ -1,0 +1,41 @@
+You are given sales.csv with columns seq,rep,amount (amount is a positive
+decimal with 2 decimal places). Rows are already in the order the sales
+happened; seq increases by 1 each row. If the working directory contains
+any hidden entries (names starting with a dot, such as a .remember
+directory), ignore them completely.
+
+Each sales rep earns commission on a progressive (tiered) schedule based on
+their CUMULATIVE sales for the month, the same way a marginal tax bracket
+works. The tiers, in dollars of cumulative sales, are:
+
+  [0, 5000)        -> 5%  of the portion of a sale in this range
+  [5000, 15000)     -> 8%  of the portion of a sale in this range
+  [15000, infinity) -> 12% of the portion of a sale in this range
+
+Tiers are half-open on the upper end: cumulative sales of exactly 5000.00
+belongs to the [0,5000) tier, not the [5000,15000) tier.
+
+Process each rep's rows independently, in file order, tracking that rep's
+running cumulative sales total (starting at 0.00 before their first row).
+For each row, the commission on THAT transaction is computed by splitting
+the transaction's amount across every tier boundary it crosses: the
+portion of the amount that falls within cumulative sales
+[cumulative-before, cumulative-before + amount) that lies in each tier is
+taxed at that tier's rate, and the transaction's commission is the sum of
+those per-tier portions. A single transaction can span two or three tiers
+if it crosses a boundary.
+
+Round each transaction's own commission to the nearest cent using
+round-half-up (an exact half-cent, e.g. 1.235, rounds to 1.24, and 1.245
+rounds to 1.25) BEFORE adding it to the rep's running total. Do not
+round the rep's total separately -- it is the exact sum of the already
+-rounded per-transaction commissions.
+
+Write the result to commission_result.txt with one line per rep, sorted
+alphabetically by rep name, in the form:
+
+<rep>=<total_commission>
+
+Format each total with exactly 2 decimal places and no thousands
+separators. End the file with a trailing newline after the last rep line,
+and no other lines.

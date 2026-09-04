@@ -1,0 +1,33 @@
+You are given charges.csv with columns charge_id,amount,currency (amount
+is a decimal with exactly 2 decimal places; it can be negative, meaning a
+refund) and rates.csv with columns currency,rate (rate converts one unit
+of that currency to USD, a decimal with exactly 4 decimal places). If the
+working directory contains any hidden entries (names starting with a dot,
+such as a .remember directory), ignore them completely.
+
+For each charge, convert its amount to USD by multiplying amount by that
+currency's rate exactly. Then
+round that converted amount to the nearest cent using round-half-to-even
+(banker's rounding): if the value is exactly halfway between two cents,
+round to whichever of the two cents is even. For example, with a rate
+that produces 38.205 exactly, round-half-to-even rounds to 38.20 (0 is
+even), not 38.21; a value of 38.215 would round to 38.22 (2 is even), not
+38.21. A value that is not exactly halfway rounds to the nearer cent as
+usual.
+
+Sum all of the rounded per-charge USD amounts (charges and refunds alike)
+to get the settlement total.
+
+Compute a settlement fee of exactly 1.5% of the settlement total, rounded
+to the nearest cent using round-half-up (an exact halfway value rounds
+away from zero, e.g. 0.125 rounds to 0.13). Subtract the fee from the
+settlement total to get the net payout.
+
+Write the result to settlement_result.txt with exactly one line:
+
+net_payout=<amount>
+
+Format the amount with exactly 2 decimal places. If the net payout is
+zero, write it as "0.00" (never "-0.00"). Use a leading "-" only when the
+value is genuinely negative. Do not add extra lines or trailing
+whitespace.

@@ -1,0 +1,29 @@
+You are given reservations.csv with columns room,reservation_id,start,end
+(start and end are "HH:MM" 24-hour times on the same day). If the working
+directory contains any hidden entries (names starting with a dot, such as
+a .remember directory), ignore them completely.
+
+Each reservation occupies the half-open time interval [start, end): it
+includes its start minute and excludes its end minute. Two reservations
+in the same room that merely touch (one's end equals the other's start)
+are back-to-back and do NOT overlap.
+
+For each room, compute overlap_minutes: the total number of minutes
+during the day in which 2 or more of that room's reservations are
+simultaneously in effect. A minute covered by three or more overlapping
+reservations at once must still only be counted once toward
+overlap_minutes for that minute.
+
+Write the result to billing_result.txt: one line per room that appears in
+reservations.csv, sorted alphabetically by room name, in the form:
+
+<room>=<overlap_minutes>
+
+After the room lines, write one final line naming the room with the
+largest overlap_minutes (if several rooms tie for the largest value, use
+the alphabetically first of those room names):
+
+max_room=<room>
+
+End the file with a trailing newline after the max_room line, and no
+other lines.

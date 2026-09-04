@@ -1,0 +1,30 @@
+The current directory contains "events.log", one log entry per line. Ignore
+any file or directory whose name begins with a dot; it is not part of this
+task.
+
+Sort every line into a bucket, using these rules checked IN THIS ORDER: the
+first rule that matches a line decides its bucket, and later rules are not
+considered for that line even if they would also match.
+
+1. The line contains the substring "CRITICAL"           -> bucket "critical"
+2. The line contains "ERROR" AND contains "db"           -> bucket "db_errors"
+3. The line contains "ERROR" (and did not match rule 2)  -> bucket "errors"
+4. The line contains "WARN"                               -> bucket "warnings"
+5. None of the above                                      -> bucket "other"
+
+Create a directory "buckets/" in the current directory. For each bucket
+that has at least one line assigned to it, write "buckets/<bucket>.log"
+containing that bucket's lines, in the same relative order they appeared in
+"events.log", one per line, with a trailing newline at the end. Do not
+create a file for a bucket that has zero lines.
+
+Also write "bucket_summary.txt" in the current directory: one line per
+non-empty bucket, sorted alphabetically by bucket name, in the form:
+
+    <bucket> <count>
+
+where <count> is the number of lines in that bucket. Fields separated by a
+single space. End the file with a trailing newline. Do not include a line
+for an empty bucket.
+
+Leave "events.log" itself unchanged.

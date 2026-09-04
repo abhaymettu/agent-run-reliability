@@ -1,6 +1,6 @@
 # Status
 
-Last updated 2026-09-04 01:30 EDT.
+Last updated 2026-09-04 01:42 EDT.
 
 ## What this is
 
@@ -40,13 +40,17 @@ stated precedence, edge cases planted in the generated data so a plausible first
 implementation is wrong. The model is arith_running_balance, the one v1 task
 that discriminated.
 
-Twenty-four replacement tasks are being written into `tasks_v2/`, six per
-category. Each must pass `tools/validate_tasks.py --tasks-dir tasks_v2`, and
-each author must additionally show that the naive implementation they designed
-the task to punish is in fact rejected by the checker.
+Twenty-four replacement tasks are now written into `tasks_v2/`, six per
+category, and all twenty-four pass `tools/validate_tasks.py --tasks-dir
+tasks_v2`, re-run here rather than taken from the authors' reports. Each author
+also had to name the plausible wrong implementation up front, plant the data
+that punishes it, then write that implementation and show the checker rejects
+it.
 
-Once they validate, a one-occasion calibration pilot over all 48 cells measures
-where the difficulty actually landed before the full grid is committed to.
+A three-occasion calibration pilot over all 48 cells (144 runs) is running to
+measure where the difficulty actually landed before the full grid is committed
+to. Three occasions rather than one, so a task's pooled pass rate resolves to
+sixths instead of halves.
 
 ## Earlier: the discarded pilot
 

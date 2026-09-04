@@ -1,0 +1,29 @@
+You are given scores.csv with columns employee_id,score (score is an
+integer, possibly negative). If the working directory contains any hidden
+entries (names starting with a dot, such as a .remember directory), ignore
+them completely.
+
+Rank all employees by score, highest first, using standard competition
+ranking: employees with equal scores receive the SAME rank, and the next
+distinct (lower) score receives a rank equal to 1 plus the number of
+employees ranked above it. For example, if three employees tie for the
+highest score, all three get rank 1, and the employee with the next
+highest distinct score gets rank 4 (not rank 2).
+
+Assign each employee a bonus based on their rank:
+- rank 1 through 3 (inclusive): bonus = 500
+- rank 4 through 10 (inclusive): bonus = 200
+- rank 11 or lower: bonus = 0
+
+Write the result to bonus_result.txt: one line per employee, sorted by
+employee_id ascending (this ordering is independent of rank and is only
+for making the file deterministic), in the form:
+
+<employee_id>,<rank>,<bonus>
+
+After the employee lines, write one final line:
+
+total_bonus=<sum of every employee's bonus>
+
+End the file with a trailing newline after the total_bonus line, and no
+other lines.

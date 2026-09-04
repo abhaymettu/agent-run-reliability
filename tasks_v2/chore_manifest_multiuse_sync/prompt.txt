@@ -1,0 +1,32 @@
+The current directory contains a directory "sources/", a directory
+"build/", and a file "manifest.json". Ignore any file or directory
+anywhere whose name begins with a dot; it is not part of this task.
+
+"manifest.json" is a JSON array of objects, each with two string fields:
+
+    {"target": "<relative path under build/>", "source": "<relative path under sources/>"}
+
+Make "build/" match the manifest exactly:
+
+1. For every manifest entry, "build/<target>" must exist and contain the
+   exact same bytes as "sources/<source>" (create any needed directories
+   under "build/"). The same source may appear in more than one manifest
+   entry; when it does, every target it is used for must independently end
+   up with that source's content.
+
+2. Every file already under "build/" that is not the target of any
+   manifest entry must be deleted. After deleting such files, remove any
+   directory under "build/" that no longer contains any file, directly or
+   in a subdirectory (recursively, bottom-up).
+
+3. A file already under "build/" that IS a manifest target, but whose
+   current content does not match its source, must be overwritten so its
+   content matches. A file already under "build/" that is a manifest
+   target and already has the correct content may be left as is.
+
+4. "sources/" must be completely unaffected: every file under it must
+   still exist afterward, at its original path, with its original content,
+   unchanged. Do not modify "manifest.json".
+
+When finished, "build/" must contain exactly one file per manifest entry
+(at the entry's target path) and no other files or empty directories.

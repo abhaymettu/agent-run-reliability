@@ -1,0 +1,39 @@
+You are given events.csv with columns seq,type,order_id,qty. Rows are
+already in the exact order the events must be processed (seq is 1-indexed
+and increases by 1 each row; order_id is empty for restock rows). If the
+working directory contains any hidden entries (names starting with a dot,
+such as a .remember directory), ignore them completely.
+
+The warehouse starts with a stock of 100 units. Process the rows in file
+order, one at a time:
+
+- A "restock" row adds qty units to stock immediately.
+- An "order" row requests qty units. Compare qty to the CURRENT stock (as
+  of immediately before this row, after all earlier rows including any
+  earlier restocks have already been applied):
+  - If stock >= qty: fulfill the order in full. fulfilled = qty,
+    backordered = 0. Stock decreases by qty.
+  - If 0 < stock < qty: fulfill as much as possible. fulfilled = stock,
+    backordered = qty - stock. Stock becomes 0.
+  - If stock == 0: fulfilled = 0, backordered = qty. Stock stays 0.
+
+Stock never goes negative and is never reduced by more than it currently
+holds.
+
+Compute, across all order rows:
+1. total_fulfilled: the sum of fulfilled over all orders.
+2. total_backordered: the sum of backordered over all orders.
+3. final_stock: the stock value after the last row has been processed.
+4. first_partial_order: the order_id of the first order (in file order)
+   whose fulfilled amount is strictly greater than 0 and strictly less
+   than its qty (a genuine partial fulfillment -- an order that is fully
+   fulfilled, or fully backordered with fulfilled == 0, does not count).
+   If no order is ever partially fulfilled, use the literal text "none".
+
+Write the result to warehouse_result.txt with exactly these four lines,
+in this order, and no other lines or trailing whitespace:
+
+total_fulfilled=<int>
+total_backordered=<int>
+final_stock=<int>
+first_partial_order=<order_id or none>

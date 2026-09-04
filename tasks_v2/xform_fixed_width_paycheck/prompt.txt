@@ -1,0 +1,30 @@
+You are given paychecks.txt in this directory, a fixed-width record file
+with no delimiters. Every line is exactly 35 characters wide (before the
+newline), laid out in these fixed columns (0-indexed, end-exclusive):
+
+    employee_id : characters [0, 6)    left-justified, space-padded
+    name        : characters [6, 22)   left-justified, space-padded
+                  (may itself contain internal spaces)
+    amount      : characters [22, 34)  right-justified within the field
+    flag        : character  [34, 35)  "V" means this row is VOID, " "
+                  (a single space) means normal
+
+The amount field holds a decimal dollar value with exactly 2 decimal
+places. A non-negative amount is written plainly, e.g. "1450.00". A
+negative amount is written in parenthesized accounting notation, e.g.
+"(150.75)" meaning -150.75.
+
+For each distinct employee_id, compute:
+
+  - total: the sum of the amounts of that employee's rows, EXCLUDING any
+    row whose flag is "V" (void rows contribute nothing to the total,
+    positive or negative).
+  - record_count: the number of rows for that employee_id, INCLUDING void
+    rows (every line with that employee_id counts, void or not).
+
+Write the results to paycheck_totals.csv with header line
+"employee_id,total,record_count", one row per distinct employee_id sorted
+by employee_id ascending, and no quoting. Format total as a plain decimal
+with exactly 2 decimal places, a leading "-" for negative values (never a
+leading "-" for a zero total — write "0.00", not "-0.00"), and no
+parentheses, no thousands separator, no currency symbol.

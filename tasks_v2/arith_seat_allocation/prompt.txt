@@ -1,0 +1,32 @@
+You are given votes.csv with columns party,votes (votes is a positive
+integer). If the working directory contains any hidden entries (names
+starting with a dot, such as a .remember directory), ignore them
+completely.
+
+Allocate exactly 100 seats among the parties in proportion to their votes
+using the Largest Remainder method (also called Hamilton's method):
+
+1. For each party, compute its exact quota: votes * 100 / total_votes,
+   as an exact fraction. total_votes is the sum of every
+   party's votes.
+2. Give each party a number of seats equal to the floor (integer part) of
+   its exact quota.
+3. This allocates some number of seats less than or equal to 100. Compute
+   the remainder: 100 minus the number of seats allocated in step 2.
+   Distribute one additional seat, one at a time, to the party with the
+   largest fractional remainder (exact quota minus its floor), until all
+   100 seats are allocated. If two or more parties have an EXACTLY equal
+   fractional remainder and both are candidates for an additional seat,
+   the party whose name is alphabetically first is given the seat first.
+
+Write the result to allocation_result.txt: one line per party, sorted
+alphabetically by party name, in the form:
+
+<party>=<seats>
+
+After the party lines, write one final line:
+
+seats_total=<sum of every party's seats>
+
+This total must equal 100. End the file with a trailing newline after the
+seats_total line, and no other lines.

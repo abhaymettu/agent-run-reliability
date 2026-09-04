@@ -1,0 +1,28 @@
+You are given stock.csv (header "sku,qty": the starting quantity of each
+sku in one shared, global stock pool — not per-warehouse) and orders.csv
+(header "seq,warehouse,sku,qty"). The rows of orders.csv are NOT in seq
+order — they appear in arbitrary file order. "seq" is an integer that
+defines the true processing order.
+
+Process the orders in ascending "seq" order (ignore file order entirely
+once you have read the rows). Maintain one running remaining-stock count
+per sku, shared across all warehouses, starting from stock.csv. For each
+order row, in seq order:
+
+- If qty is positive, it is a normal request for that many units of that
+  sku. Allocate as many units as are currently available, up to the
+  requested amount: allocated = min(qty, remaining_stock_for_that_sku).
+  This may be less than requested (a PARTIAL fill) or exactly 0 if none
+  remain — never reject or skip the row outright, and never allocate more
+  than what is currently remaining. Subtract the allocated amount from
+  that sku's remaining stock.
+- If qty is negative, it is a RETURN: it adds |qty| units back to that
+  sku's remaining stock pool. A return always succeeds in full — its
+  allocated amount equals its (negative) requested qty exactly, and a
+  return itself never draws from stock or gets partially filled.
+
+Write the result to allocations.csv with header
+"seq,warehouse,sku,requested,allocated", one row per row of orders.csv,
+sorted by seq ascending. requested is the order's original qty (as-is,
+including sign); allocated is the amount computed above (as-is, including
+sign for returns). Both are plain integers, no quoting.

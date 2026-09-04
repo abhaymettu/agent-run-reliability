@@ -1,0 +1,34 @@
+The current directory contains a flat set of files. Ignore any file or
+directory whose name begins with a dot; it is not part of this task.
+
+Each file's content starts with a line of the form "ID: <n>" where <n> is a
+non-negative integer (no leading zeros).
+
+For each file, compute its base target name:
+
+    rec_<n>.<ext>
+
+where <n> is the number from the "ID:" line, zero-padded to exactly 3
+digits, and <ext> is the file's original extension (the part of its
+original name after the last "."), without an extra dot.
+
+If a base target name is claimed by exactly one file, rename that file (in
+place, in the current directory) to its base target name.
+
+If a base target name is claimed by two or more files (their "ID:" lines
+have the same number and their extensions match), break the tie like this:
+sort those files by their ORIGINAL name, alphabetically. The first file in
+that order gets the plain base target name. Every other file in that order
+gets:
+
+    rec_<n>_dup<k>.<ext>
+
+where <k> is that file's 1-based position among the *other* files in the
+group (the second file overall gets dup1, the third gets dup2, and so on;
+the file that won the plain name does not get a dup number and is not
+counted).
+
+Do not change any file's content. When finished, the current directory must
+contain exactly one file per original file, each under its computed final
+name (as described above), and no files under their original names (unless
+a file's original name happens to already equal its computed final name).

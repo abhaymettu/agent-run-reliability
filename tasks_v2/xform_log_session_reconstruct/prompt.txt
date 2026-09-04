@@ -1,0 +1,37 @@
+You are given session.log in this directory, one event per line, in
+chronological order, formatted as:
+
+    <timestamp> user=<username> event=<LOGIN|LOGOUT>
+
+Timestamps are ISO-like local time, e.g. 2026-01-05T08:03:00.
+
+Reconstruct login sessions and compute, for each user, the total number of
+seconds they spent logged in, under these rules:
+
+1. A LOGIN while the user has no currently-open session opens a new session
+   starting at that event's timestamp.
+2. A LOGIN while the user ALREADY has an open session (no LOGOUT has closed
+   it yet) implicitly closes that prior session at this new LOGIN's
+   timestamp — the duration from the prior LOGIN to this new LOGIN counts
+   toward the user's total — and then opens a fresh session starting at
+   this new LOGIN's timestamp.
+3. A LOGOUT while the user has an open session closes it at that
+   timestamp; the duration counts toward the total.
+4. A LOGOUT while the user has no open session is a stray event: ignore it
+   entirely (it does not open, close, or affect anything).
+5. After the last line of the file has been processed, any session that is
+   still open is closed using the timestamp of that very last line in the
+   file (regardless of which user that last line belongs to).
+
+A user who never appears in session.log at all should not appear in the
+output.
+
+Write the results to session_totals.txt, one line per user who has at
+least one event in the file, sorted by username ascending, formatted
+exactly as:
+
+    <username>=<total_seconds>
+
+where total_seconds is a non-negative integer, rounded to the nearest
+integer if needed. No extra lines, no trailing
+whitespace, no blank line at the end.

@@ -81,7 +81,7 @@ def build_queue(tasks, models, runs, done):
     return queue
 
 
-def run_one(task_id, model, run_index, tasks_dir, workroot, timeout, keep_workdirs):
+def run_one(task_id, model, run_index, tasks_dir, workroot, timeout, keep_workdirs, max_turns):
     started_at = datetime.datetime.now().isoformat()
     task_dir = os.path.join(tasks_dir, task_id)
     workdir = os.path.join(workroot, task_id, model, str(run_index))
@@ -96,6 +96,7 @@ def run_one(task_id, model, run_index, tasks_dir, workroot, timeout, keep_workdi
         "timed_out": False,
         "check_exit": -1,
         "check_msg": "",
+        "max_turns_cap": max_turns,
         "num_turns": -1,
         "cost_usd": 0.0,
         "session_id": "",
@@ -134,7 +135,7 @@ def run_one(task_id, model, run_index, tasks_dir, workroot, timeout, keep_workdi
         CLAUDE_BIN, "-p", "--model", model, "--strict-mcp-config",
         "--mcp-config", EMPTY_MCP_CONFIG,
         "--allowedTools", ALLOWED_TOOLS,
-        "--max-turns", "40",
+        "--max-turns", str(max_turns),
         "--output-format", "json",
         prompt_text,
     ]
@@ -227,6 +228,7 @@ def main():
     parser.add_argument("--runs", type=int, required=True)
     parser.add_argument("--concurrency", type=int, default=4)
     parser.add_argument("--timeout", type=int, default=300)
+    parser.add_argument("--max-turns", type=int, default=40)
     parser.add_argument("--out", default="results/runs.jsonl")
     parser.add_argument("--workroot", default="results/runs")
     parser.add_argument("--dry-run", action="store_true")
@@ -284,7 +286,7 @@ def main():
         task_id, model, run_index = key
         record = run_one(
             task_id, model, run_index, args.tasks_dir, args.workroot,
-            args.timeout, args.keep_workdirs,
+            args.timeout, args.keep_workdirs, args.max_turns,
         )
         append_record(out_path, record)
         nonlocal completed

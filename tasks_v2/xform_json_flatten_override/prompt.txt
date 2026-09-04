@@ -1,0 +1,39 @@
+You are given base.json in this directory, and a subdirectory overrides/
+containing override_01.json, override_02.json, override_03.json. Ignore
+any file or directory whose name begins with a dot (such as a hidden
+.remember/ directory) if you see one.
+
+Starting from base.json, apply the three override files in ascending
+numeric order (01, then 02, then 03) as a deep merge, using these rules:
+
+1. If the current merged value at some key and the override's value at
+   that same key are BOTH JSON objects, merge them recursively (keys only
+   in one side are kept; keys in both recurse under this same rule).
+2. In every other case — the override's value is a list, a string, a
+   number, a boolean, null, or its type does not match the current
+   value's type — the override value completely REPLACES whatever was
+   there. Lists are never concatenated or merged element-by-element; a
+   list from an override always replaces the base list in full, even if
+   it is shorter. A JSON object is never merged into a non-object; the
+   override simply replaces it.
+3. Later override files take precedence over earlier ones and over
+   base.json, following rules 1-2 at each step.
+
+After applying all three overrides in order, flatten the final merged
+object into dotted-path leaf entries:
+
+  - Nested object keys join with ".", e.g. "service.timeout.read".
+  - Array elements append "[index]" (0-based) to the path, e.g.
+    "service.hosts[0]".
+  - Only leaves (values that are not objects and not arrays) produce an
+    output line. An empty object or empty array produces no line at all.
+
+Write the result to flattened.txt, one line per leaf, sorted by path
+ascending (plain string sort), formatted exactly as:
+
+    <path>=<value>
+
+where <value> is the leaf's exact JSON representation (use compact JSON
+encoding: strings double-quoted, true/false/null lowercase, numbers
+without unnecessary formatting, no extra whitespace). No blank lines, no
+trailing whitespace, no trailing blank line at the end of the file.

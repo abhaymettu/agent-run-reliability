@@ -1,0 +1,44 @@
+The current directory contains a flat set of ticket files. Ignore any file
+or directory whose name begins with a dot; it is not part of this task.
+
+Each file's content starts with two lines:
+
+    PRIORITY: <p>
+    CREATED: <n>
+
+where <p> and <n> are non-negative integers.
+
+A ticket is INVALID if its priority is 0. Every other ticket is VALID.
+
+1. Move every invalid ticket, unchanged (same name, same content), into a
+   top-level directory named "rejected/" (create it if needed). Invalid
+   tickets are never renamed and never assigned a sequence number.
+
+2. Determine the processing order of the VALID tickets only: sort them by
+   priority ascending; break ties (equal priority) by the "CREATED" number
+   ascending. This is the order in which sequence numbers are assigned --
+   it is not filename order and invalid tickets play no part in it.
+
+3. Walking the valid tickets in that processing order, assign sequence
+   numbers starting at 1, incrementing by 1 for each valid ticket (invalid
+   tickets never consume a number). Rename each valid ticket (in place, in
+   the current directory) to:
+
+       TCK-<id>_<original_stem>.<ext>
+
+   where <id> is its assigned sequence number zero-padded to exactly 4
+   digits, <original_stem> is its original filename without the last
+   "."-extension, and <ext> is that extension (without the dot). Do not
+   change file content.
+
+4. Write "ticket_manifest.txt" in the current directory: one line per valid
+   ticket, sorted by assigned sequence number ascending, in the form:
+
+       <new_name> priority=<p> created=<n>
+
+   Fields separated by single spaces. Do not include a line for invalid
+   (rejected) tickets. End the file with a trailing newline.
+
+When finished, the current directory must contain exactly the renamed valid
+tickets, "rejected/" (containing the unchanged invalid tickets), and
+"ticket_manifest.txt" -- no files under their original valid-ticket names.

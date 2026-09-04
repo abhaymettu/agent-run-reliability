@@ -47,3 +47,29 @@ without being ambiguous.
 
 The test of a good hard task: the reference solution is short and obviously
 correct once you see it, and a plausible first attempt gets it wrong.
+
+## Battery v2 also hit the ceiling, and what followed
+
+The twenty-four v2 tasks were written to this brief. Their authors had to name
+the plausible wrong implementation before writing the task, plant the data that
+punishes it, and then write that implementation and show the checker rejects
+it. Every one of them did.
+
+The calibration pilot (144 runs, `results/pilot_v2/`) put the battery at 0.972
+pooled: sonnet 0.986, haiku 0.958, zero of twenty-four tasks in band. Round one
+scored 0.990 / 0.953. Two rounds of deliberate hardening moved the pass rate by
+about a point.
+
+The conclusion drawn here is that specification-level difficulty is not a
+usable control for these models on deterministic file-manipulation work. What
+a careful author can plant, a competent agent can read. The remaining lever
+that moves monotonically and can be calibrated is the budget: `--max-turns`,
+which under the v2 pilot never bound at all (sonnet used a median of 5 turns,
+haiku 7, against a cap of 40).
+
+Difficulty is therefore set by the turn budget, calibrated against the same
+0.3-0.8 band, and the budget is recorded per run as `max_turns_cap`. This
+changes what a failure means: under a tight budget a run fails because it spent
+its turns badly, not because the agent could not do the work. That is a
+different construct from unconstrained capability, it is the one the study
+measures, and the report says so plainly.

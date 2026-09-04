@@ -1,0 +1,24 @@
+You are given readings.csv (header "sensor_id,field,timestamp,value";
+timestamp is an integer epoch-seconds value) and targets.csv (header
+"sensor_id,field,target_timestamp"). Rows in readings.csv are NOT sorted
+by timestamp — they appear in arbitrary file order, and a given
+(sensor_id, field) pair can have several readings scattered anywhere in
+the file, at timestamps before or after any given target.
+
+For each row of targets.csv, find the reading in readings.csv with the
+same sensor_id AND the same field whose timestamp is closest to that row's
+target_timestamp — closest meaning the smallest absolute difference
+|timestamp - target_timestamp|, considering ALL readings for that
+sensor_id/field pair regardless of whether their timestamp is before or
+after target_timestamp. If two or more readings are exactly equidistant
+(a tie), choose the one with the SMALLER timestamp.
+
+It is guaranteed that every (sensor_id, field) pair in targets.csv has at
+least one matching reading in readings.csv.
+
+Write the result to nearest.csv with header
+"sensor_id,field,timestamp,value", one row per row of targets.csv, in the
+SAME order targets.csv lists them (not sorted). Each row gives the
+matched reading's own timestamp and value (not the target_timestamp). Do
+not quote any field; write timestamp as a plain integer and value exactly
+as it appears in readings.csv (do not reformat or round it).

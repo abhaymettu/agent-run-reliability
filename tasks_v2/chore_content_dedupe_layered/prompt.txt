@@ -1,0 +1,34 @@
+The current directory contains a tree of files in nested subdirectories.
+Ignore any file or directory whose name begins with a dot; it is not part
+of this task.
+
+1. Find every set of two or more files, EXCLUDING empty (0-byte) files,
+   whose content is byte-for-byte identical. Empty files are never
+   considered duplicates of each other or of anything else, no matter how
+   many there are; every empty file must be left exactly where it is.
+
+2. Within each such set, keep exactly one file and delete the rest. To pick
+   which one to keep: compare the files' paths relative to the current
+   directory (written with "/" as the separator, no leading "./") by their
+   DEPTH first -- the number of "/" characters in the relative path (a file
+   directly in the current directory has depth 0). The file with the
+   smallest depth is kept. If two or more files in the set are tied for the
+   smallest depth, keep the one whose relative path sorts first
+   alphabetically among those tied. Delete every other file in the set.
+
+3. Files that have no duplicate (ignoring empty files, whose content never
+   counts as a duplicate) must be left in place, untouched.
+
+4. Do not create, rename, or move any files or directories other than the
+   deletions above. Do not delete any now-empty directories.
+
+5. Write a manifest to "dedupe_manifest.txt" in the current directory: one
+   line per deleted file, in the form
+
+       <kept_relative_path> <- <deleted_relative_path>
+
+   using "/" as the path separator, relative to the current directory, no
+   leading "./". Sort the lines first by <kept_relative_path>, then by
+   <deleted_relative_path>, both alphabetically. Do not include a line for
+   files that had no duplicate, and do not include empty files anywhere in
+   this manifest. End the file with a trailing newline.
