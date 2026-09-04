@@ -1,0 +1,10 @@
+There is a Python module `billing.py` in this directory, along with a test
+file `test_billing.py` that exercises it. Running the tests currently
+fails.
+
+Fix `billing.py` so that every test in `test_billing.py` passes, using
+`python3 -m unittest test_billing.py` (or equivalent) to check your work.
+Read the docstrings of `round_currency` and `total_with_tax` carefully:
+they state the exact rounding rule the functions must follow. Do not
+change the behavior described in those docstrings, and do not edit
+`test_billing.py`.

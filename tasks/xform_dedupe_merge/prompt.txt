@@ -1,0 +1,19 @@
+You have two files in this directory, primary.csv and secondary.csv.
+Both have the same header: id,name,value,updated_at. Within each file,
+id values are unique, but the same id can appear in both files (with
+possibly different name, value, and updated_at).
+
+Merge the two files into one file named merged.csv in this directory,
+with the same header (id,name,value,updated_at), applying this
+precedence rule for every id that appears in at least one file:
+
+- If the id appears in only one of the two files, use that row.
+- If the id appears in both files, use the row whose updated_at is
+  later (more recent).
+- If the id appears in both files with exactly the same updated_at,
+  use the row from secondary.csv.
+
+Write exactly one output row per distinct id (the union of ids from
+both files), sorted by id ascending (ordinary text sort). updated_at
+values are ISO-8601 timestamps like "2024-03-05T14:00:00"; compare them
+as calendar time, not as text. Do not quote any field.

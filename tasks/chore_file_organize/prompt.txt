@@ -1,0 +1,21 @@
+The current directory contains a flat set of files. Sort every file into a
+subdirectory of the current directory, named by category, by moving it
+there (do not leave a copy behind and do not rename the file itself).
+
+Category rules, in order:
+
+1. A file whose name ends in ".txt" whose first line is exactly "TYPE: data"
+   goes into "data/".
+2. Otherwise, use the file's extension to pick the category:
+   - ".py", ".sh"          -> "code/"
+   - ".csv", ".json"       -> "data/"
+   - ".log"                -> "logs/"
+   - ".txt", ".md"         -> "docs/"
+   - ".jpg", ".png"        -> "images/"
+   - anything else         -> "misc/"
+
+Create each category directory only if at least one file belongs in it. When
+finished, the current directory must contain only the category
+subdirectories (no loose files left at the top level), and each file must
+appear, unmodified, directly inside its category subdirectory (not nested
+any deeper).

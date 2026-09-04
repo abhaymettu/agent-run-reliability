@@ -1,0 +1,29 @@
+You have a file named document.json in this directory containing one
+nested JSON object. It may contain nested objects, nested arrays, and
+scalar leaf values (strings, numbers, booleans, null).
+
+Flatten it into a file named flat.txt in this directory: one line per
+leaf scalar value, each line formatted as
+
+    dotted.path=value
+
+Rules for building the path:
+- Object keys are joined with ".".
+- Array elements are addressed with their 0-based index in square
+  brackets appended directly to the path with no "." before the
+  bracket, e.g. "items[0]" or "items[0].name" for a nested key inside
+  that element.
+- Only leaf scalars produce a line. Objects and arrays themselves never
+  produce a line (an empty object or empty array produces no line at
+  all).
+
+Rules for formatting the value:
+- A string value is written as-is, with no surrounding quotes.
+- An integer is written in plain decimal (e.g. "42", "-7").
+- A boolean is written as lowercase "true" or "false".
+- A null value is written as the literal text "null".
+
+Write one "path=value" line per leaf, with no blank lines and no header.
+Sort the lines by their path text, ordinary ascending lexicographic
+(character-code) order on the exact path string — do not sort array
+indices numerically.

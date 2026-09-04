@@ -1,0 +1,23 @@
+The current directory contains a tree of files (in nested subdirectories).
+Some files are byte-for-byte duplicates of each other (identical content);
+others are unique.
+
+1. Find every set of two or more files whose content is byte-for-byte
+   identical.
+2. Within each such set, keep exactly one file and delete the rest. Keep the
+   file whose path relative to the current directory (written with "/" as
+   the separator, e.g. "a/sub1/file_x.txt") sorts first alphabetically among
+   the set; delete all other files in that set.
+3. Files that have no duplicate (their content matches no other file) must
+   be left in place, untouched.
+4. Do not create, rename, or move any files or directories other than the
+   deletions above. Do not delete any now-empty directories.
+5. Write a manifest to "manifest.txt" in the current directory: one line per
+   deleted file, in the form
+
+       <kept_relative_path> <- <deleted_relative_path>
+
+   using "/" as the path separator (relative to the current directory, no
+   leading "./"). Sort the lines first by <kept_relative_path>, then by
+   <deleted_relative_path>, both alphabetically. Do not include a line for
+   files that had no duplicate. End the file with a trailing newline.

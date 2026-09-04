@@ -1,0 +1,24 @@
+You are given pairs.csv with columns id,x,y. Some x or y values are the
+literal text "NA", meaning that value is missing.
+
+Filter: exclude any record where x is "NA", where y is "NA", or where y is a
+negative number. Keep every other record. Let excluded_count be the number
+of records excluded by this rule.
+
+On the remaining (kept) records, compute the Pearson correlation
+coefficient r between x and y using this exact formula, with n = the number
+of kept records:
+
+r = (n*Sxy - Sx*Sy) / sqrt((n*Sxx - Sx^2) * (n*Syy - Sy^2))
+
+where Sx = sum of x, Sy = sum of y, Sxy = sum of x*y, Sxx = sum of x*x,
+Syy = sum of y*y, all taken over the kept records only.
+
+Write the result to corr_result.txt with exactly two lines:
+
+r=<value>
+excluded=<integer>
+
+Format r with exactly 4 decimal places, rounded half-up (for example:
+0.9010, -0.1235). excluded must be a plain integer. Do not add extra lines
+or trailing whitespace.

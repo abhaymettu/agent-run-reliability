@@ -1,0 +1,26 @@
+The current directory contains a tree of files and subdirectories. Set the
+permission mode (chmod) of every file according to this rule table, checked
+in order — the first matching rule applies, later rules are not considered:
+
+1. If the file's base name (its name without any directory part) contains
+   the substring "secret", set its mode to 600.
+2. Otherwise, if the file's name ends in ".sh", set its mode to 755.
+3. Otherwise, if the file's size is greater than 100 bytes, set its mode to
+   664.
+4. Otherwise, set its mode to 644.
+
+Every directory (including the current directory itself is not required,
+but every subdirectory created for this tree) must have mode 755.
+
+Do not change any file's content, name, or location.
+
+When finished, write "manifest.txt" in the current directory: one line per
+file (not directories), sorted alphabetically by the file's path relative to
+the current directory (using "/" as separator, no leading "./"), in the
+form:
+
+    <relative_path> <mode>
+
+where <mode> is the 3-digit octal mode (e.g. "644", "755", "600", "664").
+Fields separated by a single space. End the file with a trailing newline.
+Do not include a line for manifest.txt itself.

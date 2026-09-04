@@ -1,0 +1,10 @@
+There is a Python module `machine.py` in this directory, along with a test
+file `test_machine.py` that exercises it. Running the tests currently
+fails.
+
+Fix `machine.py` so that every test in `test_machine.py` passes, using
+`python3 -m unittest test_machine.py` (or equivalent) to check your work.
+The docstring on `transition` states the complete set of valid state
+transitions, including the no-op ones and the ones that must raise
+ValueError. Do not change that documented behavior, and do not edit
+`test_machine.py`.

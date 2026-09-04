@@ -1,0 +1,30 @@
+You are given transactions.csv with columns date,amount (date is YYYY-MM-DD;
+amount is a signed decimal with 2 decimal places — positive is a deposit,
+negative is a withdrawal).
+
+Starting from a balance of 1000.00, apply the transactions in the exact
+order they appear in the file (this is already the correct chronological
+order; if two rows share the same date, apply them in file order).
+
+Overdraft rule: the account has an overdraft limit of -500.00. Before
+applying a transaction, check what the balance would become. If it would go
+BELOW -500.00 (strictly less than -500.00), reject that transaction: skip
+it, leave the balance unchanged, and continue with the next transaction. If
+the result would be exactly -500.00 or higher, apply it normally.
+
+Find:
+1. The first date (from the file) on which the running balance becomes
+   negative (strictly less than 0.00) after applying that date's
+   transaction(s). If the balance never goes negative, use the literal text
+   "none".
+2. The final balance after processing every transaction (applying the
+   overdraft rule throughout).
+
+Write the result to balance_result.txt with exactly two lines:
+
+first_negative_date=<date or none>
+final_balance=<amount>
+
+Format the final balance with exactly 2 decimal places, using a leading "-"
+for negative values and no thousands separators (for example: -375.78,
+0.00, 1000.00). Do not add extra lines or trailing whitespace.

@@ -1,0 +1,17 @@
+You are given records.csv with columns id,group,value (value is an integer and
+may be negative).
+
+For each distinct group, compute the median of its value column:
+- Sort that group's values in ascending order.
+- If the group has an odd number of values, the median is the middle value.
+- If the group has an even number of values, the median is the average of the
+  two middle values.
+
+Write the results to median_by_group.csv with header exactly:
+
+group,median
+
+One row per group, sorted by group name in ascending alphabetical order.
+Format each median with exactly one decimal place (for example: 5.0, 12.5,
+-3.0). Do not include an id column, do not add extra columns, and do not add
+blank lines or trailing whitespace.

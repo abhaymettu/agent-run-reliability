@@ -1,0 +1,19 @@
+You have a file named sales.csv in this directory. It has a header row
+"region,quarter,amount" followed by data rows. A region may appear with
+the same quarter on more than one row (its amounts should be summed), and
+a region may be entirely missing some quarters.
+
+Pivot this data into a region-by-quarter matrix and write it to a file
+named pivot.csv in this directory, as CSV with a header row:
+
+    region,Q1,Q2,Q3,Q4
+
+- One row per region, regions sorted alphabetically (ascending, by their
+  exact text as they appear in sales.csv).
+- Columns are in the fixed order Q1, Q2, Q3, Q4 regardless of the order
+  quarters appear in the source data.
+- Each cell is the sum of all "amount" values for that region and quarter.
+- If a region has no rows at all for a given quarter, write 0 for that
+  cell.
+- Write amounts as plain integers (no thousands separators, no decimal
+  point, no currency symbol). Do not quote any field.
