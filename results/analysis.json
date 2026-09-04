@@ -1,0 +1,1153 @@
+{
+  "meta": {
+    "runs_file": "results/battery_v2_cap3.jsonl",
+    "seed": 20260904,
+    "bootstrap_resamples": 2000,
+    "design": "fully crossed task x model, occasions nested within cell as the residual replication facet; tasks treated as random, model is the facet of measurement interest (also treated as random for variance-component estimation)."
+  },
+  "descriptives": {
+    "totals": {
+      "n_runs": 384,
+      "n_timeouts": 0,
+      "n_errors": 0,
+      "n_tasks": 24,
+      "n_models": 2
+    },
+    "per_model": {
+      "haiku": {
+        "n_runs": 192,
+        "pass_rate": 0.5885416666666666,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "sonnet": {
+        "n_runs": 192,
+        "pass_rate": 0.703125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      }
+    },
+    "per_task": {
+      "arith_interval_billing": {
+        "n_runs": 16,
+        "pass_rate": 0.4375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_rank_bonus": {
+        "n_runs": 16,
+        "pass_rate": 0.8125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_rounding_settlement": {
+        "n_runs": 16,
+        "pass_rate": 0.5625,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_seat_allocation": {
+        "n_runs": 16,
+        "pass_rate": 0.9375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_tiered_commission": {
+        "n_runs": 16,
+        "pass_rate": 0.4375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_warehouse_backorder": {
+        "n_runs": 16,
+        "pass_rate": 0.8125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_content_dedupe_layered": {
+        "n_runs": 16,
+        "pass_rate": 0.4375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_log_bucket_precedence": {
+        "n_runs": 16,
+        "pass_rate": 0.8125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_manifest_multiuse_sync": {
+        "n_runs": 16,
+        "pass_rate": 0.0625,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_priority_sequence_rename": {
+        "n_runs": 16,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_rename_collide": {
+        "n_runs": 16,
+        "pass_rate": 0.25,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_stage_prune": {
+        "n_runs": 16,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_batch_chunks": {
+        "n_runs": 16,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_bucket_alias": {
+        "n_runs": 16,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_interval_merge": {
+        "n_runs": 16,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_median_sort": {
+        "n_runs": 16,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_skip_invalid": {
+        "n_runs": 16,
+        "pass_rate": 0.9375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_top_k_tiebreak": {
+        "n_runs": 16,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_csv_dedupe_versioned": {
+        "n_runs": 16,
+        "pass_rate": 0.75,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_csv_inventory_allocation": {
+        "n_runs": 16,
+        "pass_rate": 0.5625,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_fixed_width_paycheck": {
+        "n_runs": 16,
+        "pass_rate": 0.8125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_json_flatten_override": {
+        "n_runs": 16,
+        "pass_rate": 0.75,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_log_session_reconstruct": {
+        "n_runs": 16,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_reshape_nearest_reading": {
+        "n_runs": 16,
+        "pass_rate": 0.25,
+        "n_timeouts": 0,
+        "n_errors": 0
+      }
+    },
+    "per_task_model_cell": {
+      "arith_interval_billing|haiku": {
+        "task": "arith_interval_billing",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_interval_billing|sonnet": {
+        "task": "arith_interval_billing",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.75,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_rank_bonus|haiku": {
+        "task": "arith_rank_bonus",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.75,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_rank_bonus|sonnet": {
+        "task": "arith_rank_bonus",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_rounding_settlement|haiku": {
+        "task": "arith_rounding_settlement",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.5,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_rounding_settlement|sonnet": {
+        "task": "arith_rounding_settlement",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.625,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_seat_allocation|haiku": {
+        "task": "arith_seat_allocation",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_seat_allocation|sonnet": {
+        "task": "arith_seat_allocation",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_tiered_commission|haiku": {
+        "task": "arith_tiered_commission",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_tiered_commission|sonnet": {
+        "task": "arith_tiered_commission",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.5,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_warehouse_backorder|haiku": {
+        "task": "arith_warehouse_backorder",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "arith_warehouse_backorder|sonnet": {
+        "task": "arith_warehouse_backorder",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.75,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_content_dedupe_layered|haiku": {
+        "task": "chore_content_dedupe_layered",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_content_dedupe_layered|sonnet": {
+        "task": "chore_content_dedupe_layered",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.5,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_log_bucket_precedence|haiku": {
+        "task": "chore_log_bucket_precedence",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_log_bucket_precedence|sonnet": {
+        "task": "chore_log_bucket_precedence",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.625,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_manifest_multiuse_sync|haiku": {
+        "task": "chore_manifest_multiuse_sync",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_manifest_multiuse_sync|sonnet": {
+        "task": "chore_manifest_multiuse_sync",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_priority_sequence_rename|haiku": {
+        "task": "chore_priority_sequence_rename",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_priority_sequence_rename|sonnet": {
+        "task": "chore_priority_sequence_rename",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_rename_collide|haiku": {
+        "task": "chore_rename_collide",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_rename_collide|sonnet": {
+        "task": "chore_rename_collide",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.5,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_stage_prune|haiku": {
+        "task": "chore_stage_prune",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "chore_stage_prune|sonnet": {
+        "task": "chore_stage_prune",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_batch_chunks|haiku": {
+        "task": "codefix_batch_chunks",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_batch_chunks|sonnet": {
+        "task": "codefix_batch_chunks",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_bucket_alias|haiku": {
+        "task": "codefix_bucket_alias",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_bucket_alias|sonnet": {
+        "task": "codefix_bucket_alias",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_interval_merge|haiku": {
+        "task": "codefix_interval_merge",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_interval_merge|sonnet": {
+        "task": "codefix_interval_merge",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_median_sort|haiku": {
+        "task": "codefix_median_sort",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_median_sort|sonnet": {
+        "task": "codefix_median_sort",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_skip_invalid|haiku": {
+        "task": "codefix_skip_invalid",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_skip_invalid|sonnet": {
+        "task": "codefix_skip_invalid",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_top_k_tiebreak|haiku": {
+        "task": "codefix_top_k_tiebreak",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "codefix_top_k_tiebreak|sonnet": {
+        "task": "codefix_top_k_tiebreak",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_csv_dedupe_versioned|haiku": {
+        "task": "xform_csv_dedupe_versioned",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.5,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_csv_dedupe_versioned|sonnet": {
+        "task": "xform_csv_dedupe_versioned",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_csv_inventory_allocation|haiku": {
+        "task": "xform_csv_inventory_allocation",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_csv_inventory_allocation|sonnet": {
+        "task": "xform_csv_inventory_allocation",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.75,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_fixed_width_paycheck|haiku": {
+        "task": "xform_fixed_width_paycheck",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.625,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_fixed_width_paycheck|sonnet": {
+        "task": "xform_fixed_width_paycheck",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_json_flatten_override|haiku": {
+        "task": "xform_json_flatten_override",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.875,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_json_flatten_override|sonnet": {
+        "task": "xform_json_flatten_override",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.625,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_log_session_reconstruct|haiku": {
+        "task": "xform_log_session_reconstruct",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_log_session_reconstruct|sonnet": {
+        "task": "xform_log_session_reconstruct",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 1.0,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_reshape_nearest_reading|haiku": {
+        "task": "xform_reshape_nearest_reading",
+        "model": "haiku",
+        "n_runs": 8,
+        "pass_rate": 0.125,
+        "n_timeouts": 0,
+        "n_errors": 0
+      },
+      "xform_reshape_nearest_reading|sonnet": {
+        "task": "xform_reshape_nearest_reading",
+        "model": "sonnet",
+        "n_runs": 8,
+        "pass_rate": 0.375,
+        "n_timeouts": 0,
+        "n_errors": 0
+      }
+    }
+  },
+  "balanced_subgrid": {
+    "note": "Full grid seen: 24 tasks x 2 models. Used balanced fully-crossed subgrid: 24 tasks x 2 models, n=8 occasions/cell (first n runs by run_index in each cell). Grid was already fully crossed; only truncated to the min count per cell if counts varied.",
+    "tasks_used": [
+      "arith_interval_billing",
+      "arith_rank_bonus",
+      "arith_rounding_settlement",
+      "arith_seat_allocation",
+      "arith_tiered_commission",
+      "arith_warehouse_backorder",
+      "chore_content_dedupe_layered",
+      "chore_log_bucket_precedence",
+      "chore_manifest_multiuse_sync",
+      "chore_priority_sequence_rename",
+      "chore_rename_collide",
+      "chore_stage_prune",
+      "codefix_batch_chunks",
+      "codefix_bucket_alias",
+      "codefix_interval_merge",
+      "codefix_median_sort",
+      "codefix_skip_invalid",
+      "codefix_top_k_tiebreak",
+      "xform_csv_dedupe_versioned",
+      "xform_csv_inventory_allocation",
+      "xform_fixed_width_paycheck",
+      "xform_json_flatten_override",
+      "xform_log_session_reconstruct",
+      "xform_reshape_nearest_reading"
+    ],
+    "models_used": [
+      "haiku",
+      "sonnet"
+    ],
+    "n_occasions_per_cell": 8,
+    "dropped_tasks": [],
+    "dropped_models": []
+  },
+  "anova": {
+    "formula_used": "Balanced two-way fully-random-effects ANOVA with n replicates per cell (Searle/Casella/McCulloch expected-mean-squares method of moments). sigma2_residual=MS_res; sigma2_task_x_model=(MS_TM-MS_res)/n; sigma2_task=(MS_task-MS_TM)/(M*n); sigma2_model=(MS_model-MS_TM)/(T*n).",
+    "T_tasks": 24,
+    "M_models": 2,
+    "n_occasions": 8,
+    "mean_squares": {
+      "task": 1.818840579710145,
+      "model": 1.2604166666666674,
+      "task_x_model": 0.21693840579710144,
+      "residual": 0.11830357142857142
+    },
+    "sum_of_squares": {
+      "task": 41.833333333333336,
+      "model": 1.2604166666666674,
+      "task_x_model": 4.989583333333333,
+      "residual": 39.75,
+      "total": 87.83333333333333
+    },
+    "degrees_of_freedom": {
+      "task": 23,
+      "model": 1,
+      "task_x_model": 23,
+      "residual": 336
+    },
+    "variance_components_raw": {
+      "task": 0.10011888586956522,
+      "model": 0.0054347826086956555,
+      "task_x_model": 0.012329354296066252,
+      "residual": 0.11830357142857142
+    },
+    "variance_components_truncated_at_zero": {
+      "task": 0.10011888586956522,
+      "model": 0.0054347826086956555,
+      "task_x_model": 0.012329354296066252,
+      "residual": 0.11830357142857142
+    },
+    "note_on_negative_estimates": "Method-of-moments variance component estimates can be negative when the corresponding mean square is smaller than the one it's differenced against; this is a valid (if inconvenient) point estimate of a component near zero. Both raw and zero-truncated versions are reported; truncated versions are what feed the G-coefficient and D-study computations below."
+  },
+  "g_task_per_model": {
+    "definition": "G_task(k) = sigma2_task / (sigma2_task + sigma2_residual/k), relative-error G for a task's score averaged over k occasions, computed SEPARATELY within each model via its own one-way random-effects ANOVA over tasks (task random, occasion residual) -- so sigma2_task and sigma2_residual here are model-specific, not the pooled two-way components above. This is an explicit choice: the task wording says 'computed within each model', which we read as a fully separate per-model one-way decomposition rather than reusing the pooled ANOVA components for every model (which would give identical G_task(k) across models).",
+    "per_model_anova": {
+      "haiku": {
+        "MS": {
+          "item": 1.1899909420289856,
+          "residual": 0.11383928571428571
+        },
+        "sigma2_raw": {
+          "item": 0.13451895703933747,
+          "residual": 0.11383928571428571
+        },
+        "sigma2_truncated_at_zero": {
+          "item": 0.13451895703933747,
+          "residual": 0.11383928571428571
+        }
+      },
+      "sonnet": {
+        "MS": {
+          "item": 0.8457880434782609,
+          "residual": 0.12276785714285714
+        },
+        "sigma2_raw": {
+          "item": 0.09037752329192547,
+          "residual": 0.12276785714285714
+        },
+        "sigma2_truncated_at_zero": {
+          "item": 0.09037752329192547,
+          "residual": 0.12276785714285714
+        }
+      }
+    },
+    "g_table_k_1_to_20": {
+      "haiku": {
+        "1": 0.5416327461004917,
+        "2": 0.7026741582527143,
+        "3": 0.7799765533411489,
+        "4": 0.8253771337832473,
+        "5": 0.8552462438683271,
+        "6": 0.8763896938721746,
+        "7": 0.8921437164290038,
+        "8": 0.9043360065243985,
+        "9": 0.914051766774743,
+        "10": 0.9219759874948728,
+        "11": 0.9285623658260547,
+        "12": 0.9341233292148713,
+        "13": 0.9388810490436595,
+        "14": 0.9429978375138698,
+        "15": 0.9465950351138782,
+        "16": 0.9497651710896348,
+        "17": 0.9525800355077029,
+        "18": 0.9550961814527705,
+        "19": 0.95735876377979,
+        "20": 0.9594042729915556
+      },
+      "sonnet": {
+        "1": 0.4240182128628344,
+        "2": 0.595523581135092,
+        "3": 0.6883276870957807,
+        "4": 0.7464929859719439,
+        "5": 0.7863626767996623,
+        "6": 0.8153958409339658,
+        "7": 0.8374819335153365,
+        "8": 0.8548479632816983,
+        "9": 0.8688609563301801,
+        "10": 0.8804065232805484,
+        "11": 0.8900836320191159,
+        "12": 0.8983118971061093,
+        "13": 0.905394035710947,
+        "14": 0.9115539241391365,
+        "15": 0.9169606958234184,
+        "16": 0.9217445097432725,
+        "17": 0.9260071653140308,
+        "18": 0.9298294272639024,
+        "19": 0.9332761917320499,
+        "20": 0.9364002011060834
+      }
+    }
+  },
+  "g_model": {
+    "definition": "G_model(k, n_tasks) = sigma2_model / (sigma2_model + sigma2_task_x_model/n_tasks + sigma2_residual/(n_tasks*k)); reliability of a model-level score averaged over n_tasks tasks and k occasions per task, using the pooled two-way variance components (truncated at zero).",
+    "g_table_k_1_to_20_at_actual_n_tasks": {
+      "1": 0.49962051393256,
+      "2": 0.6459856207317808,
+      "3": 0.7158932019442041,
+      "4": 0.7568455383749033,
+      "5": 0.7837458268742014,
+      "6": 0.8027674771658247,
+      "7": 0.8169296395324016,
+      "8": 0.8278835788717214,
+      "9": 0.836608540033026,
+      "10": 0.8437220446448658,
+      "11": 0.849632792239668,
+      "12": 0.8546220491216915,
+      "13": 0.8588897241208387,
+      "14": 0.8625818010948837,
+      "15": 0.8658073728909099,
+      "16": 0.8686496021113012,
+      "17": 0.8711729931796627,
+      "18": 0.8734283470679027,
+      "19": 0.8754562167613503,
+      "20": 0.8772893673268458
+    },
+    "n_tasks_used": 24
+  },
+  "d_study": {
+    "target_g": 0.8,
+    "g_task_per_model_smallest_k": {
+      "haiku": {
+        "k": 4,
+        "reachable": true,
+        "reason": "analytic solve, k>=~3.385"
+      },
+      "sonnet": {
+        "k": 6,
+        "reachable": true,
+        "reason": "analytic solve, k>=~5.434"
+      }
+    },
+    "g_model_smallest_k_at_actual_n_tasks": {
+      "k": 6,
+      "reachable": true,
+      "reason": "analytic solve, k>=~5.834"
+    },
+    "leaderboard_flip_smallest_k": {
+      "definition": "Smallest k (occasions per task per model) at which the probability that the model with the lower true (observed) overall pass rate ('underdog') comes out ahead of the model with the higher true pass rate ('favorite') in a resampled comparison drops below 0.05. k=1 uses the exact closed-form value; k>1 uses the Monte Carlo table below. NOTE: this is biased downward -- the favorite/underdog label is read off the very same pooled sample that gets resampled, so a comparison against its own label can only look better than a comparison against an independent, freshly-drawn evaluation. See disagreement_probability for the unbiased two-independent-evaluations version.",
+      "per_pair": {
+        "haiku_vs_sonnet": 2
+      }
+    },
+    "disagreement_smallest_k": {
+      "definition": "Smallest k at which disagreement_probability (two independent evaluations, see below) drops below 0.05.",
+      "per_pair": {
+        "haiku_vs_sonnet": 3
+      }
+    },
+    "three_estimators_smallest_k_side_by_side": {
+      "definition": "Three different definitions of 'smallest k to rank the two models reliably', reported side by side per pair so they are not confused for the same quantity: (1) smallest_k_leaderboard_flip_below_0.05 -- smallest k where P(underdog beats favorite, favorite/underdog labeled from the same pooled sample being resampled) < 0.05. Biased low: the label and the resample share their data. (2) smallest_k_disagreement_probability_below_0.05 -- smallest k where P(two independent freshly-drawn k-occasion evaluations of the same two models name different winners) < 0.05. Not biased by shared-sample labeling; this is the number to trust for 'if I reran the eval, would I get the same answer'. (3) smallest_k_g_model_reaches_0.8_at_actual_n_tasks -- smallest k where the generalizability coefficient G_model(k, n_tasks) (pooled ANOVA variance components, reliability of the *whole model-level score*, not this specific pairwise comparison) reaches the conventional 0.8 threshold, at the actual number of tasks used (n_tasks=24). This one is per-corpus, not per-pair, so the same value is repeated for every pair below. If any of the three is not reachable within the k table computed (k=1..8 here), that is reported explicitly with a reason instead of a number -- see the reason fields in leaderboard_flip_smallest_k, disagreement_smallest_k, and g_model_smallest_k_at_actual_n_tasks above.",
+      "per_pair": {
+        "haiku_vs_sonnet": {
+          "smallest_k_leaderboard_flip_below_0.05": 2,
+          "smallest_k_disagreement_probability_below_0.05": 3,
+          "smallest_k_g_model_reaches_0.8_at_actual_n_tasks": {
+            "k": 6,
+            "reachable": true,
+            "reason": "analytic solve, k>=~5.834"
+          }
+        }
+      }
+    }
+  },
+  "leaderboard_flip_probability": {
+    "definition": "For each pair of models, and for k in {1,2,3,5,8} plus all k from 1 up to min(n_balanced,20): resample k occasions with replacement independently per (task, model) cell, average within model (unweighted mean) over all tasks in the balanced subgrid, and record which model's resampled average is higher. 'exact_k1' is computed in closed form (DP convolution of independent per-task Bernoulli draws at the observed cell pass rate) rather than by Monte Carlo, since k=1 resampling from a cell is exactly Bernoulli(observed cell pass rate). 'monte_carlo' entries use --bootstrap resamples, seeded. 'p_correct_ordering' per pair/k is read directly off this same table: the fraction of single evaluations at k runs whose winner matches the full-data pooled winner (= the favorite, by construction) -- reported plainly, with the caveat that the 'full-data pooled winner' it is checked against is itself only an estimate (from finitely many collected runs), not a known ground truth.",
+    "pairs": {
+      "haiku_vs_sonnet": {
+        "true_pass_rate": {
+          "haiku": 0.5885416666666666,
+          "sonnet": 0.703125
+        },
+        "underdog_model": "haiku",
+        "favorite_model": "sonnet",
+        "exact_k1": {
+          "p_a_higher": 0.8446663043249543,
+          "p_b_higher": 0.07172355930476855,
+          "p_tie": 0.08361013637027742,
+          "T": 24
+        },
+        "exact_k1_flip_probability_underdog_wins": 0.07172355930476855,
+        "exact_k1_tie_probability": 0.08361013637027742,
+        "monte_carlo": {
+          "1": {
+            "p_a_higher": 0.8465,
+            "p_b_higher": 0.0715,
+            "p_tie": 0.082,
+            "n_resamples": 2000
+          },
+          "2": {
+            "p_a_higher": 0.944,
+            "p_b_higher": 0.0275,
+            "p_tie": 0.0285,
+            "n_resamples": 2000
+          },
+          "3": {
+            "p_a_higher": 0.9745,
+            "p_b_higher": 0.014,
+            "p_tie": 0.0115,
+            "n_resamples": 2000
+          },
+          "4": {
+            "p_a_higher": 0.988,
+            "p_b_higher": 0.0065,
+            "p_tie": 0.0055,
+            "n_resamples": 2000
+          },
+          "5": {
+            "p_a_higher": 0.997,
+            "p_b_higher": 0.002,
+            "p_tie": 0.001,
+            "n_resamples": 2000
+          },
+          "6": {
+            "p_a_higher": 0.998,
+            "p_b_higher": 0.001,
+            "p_tie": 0.001,
+            "n_resamples": 2000
+          },
+          "7": {
+            "p_a_higher": 1.0,
+            "p_b_higher": 0.0,
+            "p_tie": 0.0,
+            "n_resamples": 2000
+          },
+          "8": {
+            "p_a_higher": 1.0,
+            "p_b_higher": 0.0,
+            "p_tie": 0.0,
+            "n_resamples": 2000
+          }
+        },
+        "monte_carlo_flip_probability_underdog_wins": {
+          "1": 0.0715,
+          "2": 0.0275,
+          "3": 0.014,
+          "4": 0.0065,
+          "5": 0.002,
+          "6": 0.001,
+          "7": 0.0,
+          "8": 0.0
+        },
+        "monte_carlo_tie_probability": {
+          "1": 0.082,
+          "2": 0.0285,
+          "3": 0.0115,
+          "4": 0.0055,
+          "5": 0.001,
+          "6": 0.001,
+          "7": 0.0,
+          "8": 0.0
+        },
+        "p_correct_ordering": {
+          "1": 0.8465,
+          "2": 0.944,
+          "3": 0.9745,
+          "4": 0.988,
+          "5": 0.997,
+          "6": 0.998,
+          "7": 1.0,
+          "8": 1.0
+        }
+      }
+    }
+  },
+  "disagreement_probability": {
+    "definition": "The probability that two INDEPENDENT evaluations of the same two models -- each drawing its own k freshly-drawn occasions per (task, model) cell via bootstrap resampling, with the two evaluations' resamples drawn independently of each other -- disagree about which model is ahead. Each evaluation computes a model-level mean (unweighted mean over tasks) for each model from its own k occasions, then names a winner (or a tie). Unlike leaderboard_flip_probability, neither evaluation's winner is treated as ground truth to compare the other against, so this is not biased downward by a shared-sample label. n_iterations=20000 per k (>=10000, seeded at seed+4=20260908). tie_rate_either_evaluation is the rate at which either of the two evaluations came out an exact tie. ci_95_bootstrap is a nonparametric bootstrap 95% interval on the disagreement rate (resampling the n_iterations 0/1 disagreement indicators with replacement).",
+    "pairs": {
+      "haiku_vs_sonnet": {
+        "favorite_model": "sonnet",
+        "underdog_model": "haiku",
+        "per_k": {
+          "1": {
+            "disagreement_rate": 0.2745,
+            "tie_rate_either_evaluation": 0.15665,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.26892375,
+              "hi": 0.2811,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          },
+          "2": {
+            "disagreement_rate": 0.1059,
+            "tie_rate_either_evaluation": 0.0519,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.10192375000000001,
+              "hi": 0.11067874999999999,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          },
+          "3": {
+            "disagreement_rate": 0.04165,
+            "tie_rate_either_evaluation": 0.0192,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.0385975,
+              "hi": 0.04437625,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          },
+          "4": {
+            "disagreement_rate": 0.01825,
+            "tie_rate_either_evaluation": 0.0082,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.01642375,
+              "hi": 0.020226249999999998,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          },
+          "5": {
+            "disagreement_rate": 0.00845,
+            "tie_rate_either_evaluation": 0.00415,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.0074,
+              "hi": 0.009776249999999998,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          },
+          "6": {
+            "disagreement_rate": 0.00455,
+            "tie_rate_either_evaluation": 0.00205,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.0037,
+              "hi": 0.0055,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          },
+          "7": {
+            "disagreement_rate": 0.00155,
+            "tie_rate_either_evaluation": 0.00085,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.00105,
+              "hi": 0.0021,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          },
+          "8": {
+            "disagreement_rate": 0.00105,
+            "tie_rate_either_evaluation": 0.0005,
+            "n_iterations": 20000,
+            "ci_bootstrap_replicates": 500,
+            "ci_95_bootstrap": {
+              "lo": 0.00065,
+              "hi": 0.0015,
+              "n_valid": 500,
+              "n_total": 500
+            }
+          }
+        }
+      }
+    }
+  },
+  "test_retest": {
+    "odd_even_split": {
+      "per_model": {
+        "haiku": {
+          "n_tasks": 24,
+          "pearson_r": 0.8801634494689973,
+          "spearman_rho": 0.8676996397517569,
+          "spearman_brown_full_length_pearson": 0.9362626953710608,
+          "spearman_brown_full_length_spearman": 0.9291640061215477
+        },
+        "sonnet": {
+          "n_tasks": 24,
+          "pearson_r": 0.8296484238314067,
+          "spearman_rho": 0.7677939812678433,
+          "spearman_brown_full_length_pearson": 0.9068938196269065,
+          "spearman_brown_full_length_spearman": 0.8686464479499919
+        }
+      },
+      "pooled": {
+        "n_points": 48,
+        "pearson_r": 0.8491747801381843,
+        "spearman_rho": 0.8046955632278323,
+        "spearman_brown_full_length_pearson": 0.918436471510527,
+        "spearman_brown_full_length_spearman": 0.8917798432313696
+      }
+    },
+    "random_split_seeded": {
+      "per_model": {
+        "haiku": {
+          "n_tasks": 24,
+          "pearson_r": 0.7811076086722751,
+          "spearman_rho": 0.7593662917447411,
+          "spearman_brown_full_length_pearson": 0.8771032192204837,
+          "spearman_brown_full_length_spearman": 0.8632270554549356
+        },
+        "sonnet": {
+          "n_tasks": 24,
+          "pearson_r": 0.6682280100387363,
+          "spearman_rho": 0.6504122314078608,
+          "spearman_brown_full_length_pearson": 0.8011231150869119,
+          "spearman_brown_full_length_spearman": 0.7881815452288982
+        }
+      },
+      "pooled": {
+        "n_points": 48,
+        "pearson_r": 0.7382231050455872,
+        "spearman_rho": 0.7142892327539501,
+        "spearman_brown_full_length_pearson": 0.8493997150339643,
+        "spearman_brown_full_length_spearman": 0.8333357278415237
+      },
+      "seed": 20260905
+    },
+    "note": "Per-task pass rate computed within each half (cells with <2 occasions are excluded from that split). Spearman-Brown stepped-up estimate projects the half-length correlation to the full (both-halves-combined) test length."
+  },
+  "bootstrap_confidence_intervals": {
+    "bootstrap_unit": "tasks (cluster bootstrap: whole tasks resampled with replacement; all cells/runs for a resampled task are kept together)",
+    "n_bootstrap_requested": 2000,
+    "seed": 20260904,
+    "pass_rate": {
+      "haiku": {
+        "lo": 0.4322916666666667,
+        "hi": 0.7291666666666666,
+        "n_valid": 2000,
+        "n_total": 2000
+      },
+      "sonnet": {
+        "lo": 0.5625,
+        "hi": 0.828125,
+        "n_valid": 2000,
+        "n_total": 2000
+      }
+    },
+    "pass_rate_diff": {
+      "haiku_minus_sonnet": {
+        "lo": -0.20833333333333337,
+        "hi": -0.03125,
+        "n_valid": 2000,
+        "n_total": 2000
+      }
+    },
+    "sigma2_task": {
+      "lo": 0.043221382472826086,
+      "hi": 0.1462296195652174,
+      "n_valid": 2000,
+      "n_total": 2000
+    },
+    "sigma2_model": {
+      "lo": 0.0,
+      "hi": 0.020720108695652172,
+      "n_valid": 2000,
+      "n_total": 2000
+    },
+    "sigma2_task_x_model": {
+      "lo": 0.0,
+      "hi": 0.027793312467650096,
+      "n_valid": 2000,
+      "n_total": 2000
+    },
+    "sigma2_residual": {
+      "lo": 0.08110119047619048,
+      "hi": 0.15811011904761904,
+      "n_valid": 2000,
+      "n_total": 2000
+    },
+    "g_task_1": {
+      "haiku": {
+        "lo": 0.34204686980554433,
+        "hi": 0.7153501305258253,
+        "n_valid": 2000,
+        "n_total": 2000
+      },
+      "sonnet": {
+        "lo": 0.16115503208501203,
+        "hi": 0.6357065969552514,
+        "n_valid": 2000,
+        "n_total": 2000
+      }
+    },
+    "g_task_8": {
+      "haiku": {
+        "lo": 0.8061610059920609,
+        "hi": 0.952617185026072,
+        "n_valid": 2000,
+        "n_total": 2000
+      },
+      "sonnet": {
+        "lo": 0.6058207611751022,
+        "hi": 0.9331565136423917,
+        "n_valid": 2000,
+        "n_total": 2000
+      }
+    },
+    "g_model_1": {
+      "lo": 0.0,
+      "hi": 0.7815144318597004,
+      "n_valid": 2000,
+      "n_total": 2000
+    },
+    "g_model_8": {
+      "lo": 0.0,
+      "hi": 0.9517697303985109,
+      "n_valid": 2000,
+      "n_total": 2000
+    },
+    "retest_pearson_pooled_odd_even": {
+      "lo": 0.7356181597639808,
+      "hi": 0.9222723526902324,
+      "n_valid": 2000,
+      "n_total": 2000
+    },
+    "retest_spearman_pooled_odd_even": {
+      "lo": 0.6510794817555424,
+      "hi": 0.9130727518286786,
+      "n_valid": 2000,
+      "n_total": 2000
+    }
+  }
+}

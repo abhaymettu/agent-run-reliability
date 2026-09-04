@@ -20,6 +20,12 @@ task. The leftover part is what a single-run leaderboard reports as signal.
 - 2 models, `sonnet` and `haiku`, invoked as separate `claude -p` subprocesses.
 - 8 independent runs per model per task.
 - Fully crossed and balanced: 24 x 2 x 8 = 384 runs.
+- A turn budget of 3, passed to each subject as `--max-turns` and recorded per
+  run as `max_turns_cap`. The budget is what sets the difficulty: under an
+  unconstrained budget both models pass this battery about 97% of the time,
+  which leaves nothing to decompose. `docs/DIFFICULTY.md` and
+  `results/calibration/` cover how the number was chosen and what it costs in
+  interpretation.
 
 Each run is scored pass/fail by a checker that inspects the end state of the
 working directory. No model judges another model's output.
@@ -62,7 +68,8 @@ Run the grid. It appends one JSON object per run to `results/runs.jsonl`,
 flushed and fsynced, and skips cells already present on restart:
 
 ```
-python3 harness/run_grid.py --runs 8 --concurrency 4 --timeout 300
+python3 harness/run_grid.py --models sonnet,haiku --runs 8 --concurrency 4 \
+    --timeout 300 --max-turns 3
 ```
 
 The queue is ordered run-index-major, so every cell gets its first run before
@@ -85,10 +92,17 @@ cluster bootstrap are all written out in `analysis/analyze.py`.
 tasks/          24 task directories
 harness/        run_grid.py, the subprocess runner
 analysis/       analyze.py, selftest.py, results.json
-tools/          validate_tasks.py
-docs/           TASK_CONTRACT.md, RUN_SCHEMA.md
-results/        runs.jsonl and the harness log
+tools/          validate_tasks.py, difficulty_report.py
+docs/           TASK_CONTRACT.md, RUN_SCHEMA.md, DIFFICULTY.md
+results/        the grid, and every dataset that did not become the grid
 ```
 
-`docs/RUN_SCHEMA.md` documents the fourteen fields of a run record.
-`results/discarded/` holds a pilot that was thrown away and why.
+`docs/RUN_SCHEMA.md` documents the fifteen fields of a run record.
+
+Four earlier datasets are kept rather than deleted, because what they measure
+is part of the finding: `results/battery_v1/` is the first battery, which ran
+to completion and landed at 0.97 pooled; `results/pilot_v2/` is the second
+battery's calibration pilot, which landed at 0.97 as well; `results/
+calibration/` is the turn-budget sweep that followed; and `results/discarded/`
+is a pilot thrown away because of an environment defect, with the reason.
+The v1 battery itself is at the tag `battery-v1`.

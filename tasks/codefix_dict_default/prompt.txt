@@ -1,8 +1,0 @@
-There is a Python module `grouping.py` in this directory, along with a test
-file `test_grouping.py` that exercises it. Running the tests currently
-fails.
-
-Fix `grouping.py` so that every test in `test_grouping.py` passes, using
-`python3 -m unittest test_grouping.py` (or equivalent) to check your work.
-Do not change the behavior described in the function's docstring, and do
-not edit `test_grouping.py`.
