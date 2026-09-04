@@ -531,10 +531,8 @@ def disagreement_probability(task_list, modelA, modelB, cells_full, k, rng, n_it
         return None
 
     def eval_once():
-        avgA = sum(rng.choice(cellA[t]) for t in task_list) / len(task_list) if k == 1 else \
-            mean([mean([rng.choice(cellA[t]) for _ in range(k)]) for t in task_list])
-        avgB = sum(rng.choice(cellB[t]) for t in task_list) / len(task_list) if k == 1 else \
-            mean([mean([rng.choice(cellB[t]) for _ in range(k)]) for t in task_list])
+        avgA = mean([mean([rng.choice(cellA[t]) for _ in range(k)]) for t in task_list])
+        avgB = mean([mean([rng.choice(cellB[t]) for _ in range(k)]) for t in task_list])
         if avgA > avgB:
             return 1
         if avgB > avgA:
@@ -554,12 +552,7 @@ def disagreement_probability(task_list, modelA, modelB, cells_full, k, rng, n_it
     rate = sum(flags) / n
     tie_rate = ties / n
 
-    boot_rates = []
-    for _ in range(ci_bootstrap):
-        s = 0
-        for _ in range(n):
-            s += flags[rng.randrange(n)]
-        boot_rates.append(s / n)
+    boot_rates = [sum(rng.choices(flags, k=n)) / n for _ in range(ci_bootstrap)]
     ci = percentile_ci(boot_rates)
 
     return {
