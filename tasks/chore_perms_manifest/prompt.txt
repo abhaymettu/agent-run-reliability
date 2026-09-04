@@ -1,6 +1,8 @@
 The current directory contains a tree of files and subdirectories. Set the
 permission mode (chmod) of every file according to this rule table, checked
-in order — the first matching rule applies, later rules are not considered:
+in order — the first matching rule applies, later rules are not considered.
+Ignore any file or directory whose name begins with a dot; it is not part
+of this tree.
 
 1. If the file's base name (its name without any directory part) contains
    the substring "secret", set its mode to 600.

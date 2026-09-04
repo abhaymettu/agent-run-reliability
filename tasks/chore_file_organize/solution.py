@@ -7,7 +7,10 @@ from gen import expected_category
 
 def main():
     workdir = sys.argv[1]
-    names = [n for n in os.listdir(workdir) if os.path.isfile(os.path.join(workdir, n))]
+    names = [
+        n for n in os.listdir(workdir)
+        if not n.startswith(".") and os.path.isfile(os.path.join(workdir, n))
+    ]
     for name in names:
         path = os.path.join(workdir, name)
         with open(path, "rb") as f:

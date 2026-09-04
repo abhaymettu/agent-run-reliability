@@ -2,6 +2,10 @@ import os
 import sys
 
 
+def _is_dotted(name):
+    return name.startswith(".")
+
+
 def expected_mode(basename, size):
     if "secret" in basename:
         return 0o600
@@ -16,8 +20,11 @@ def main():
     workdir = sys.argv[1]
     manifest_lines = []
     for root, dirs, fnames in os.walk(workdir):
+        dirs[:] = [d for d in dirs if not _is_dotted(d)]
         os.chmod(root, 0o755)
         for fn in fnames:
+            if _is_dotted(fn):
+                continue
             full = os.path.join(root, fn)
             size = os.path.getsize(full)
             mode = expected_mode(fn, size)

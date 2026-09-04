@@ -1,6 +1,7 @@
 The current directory contains a tree of files (in nested subdirectories).
 Some files are byte-for-byte duplicates of each other (identical content);
-others are unique.
+others are unique. Ignore any file or directory whose name begins with a dot;
+it is not part of this task.
 
 1. Find every set of two or more files whose content is byte-for-byte
    identical.

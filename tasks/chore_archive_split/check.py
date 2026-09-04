@@ -10,6 +10,11 @@ def fail(msg):
     sys.exit(1)
 
 
+def _is_dotted(name):
+    """True if a path component (file or dir name) starts with a dot."""
+    return name.startswith(".")
+
+
 def main():
     if len(sys.argv) < 2:
         fail("usage: check.py <workdir>")
@@ -56,7 +61,7 @@ def main():
         fail(f"index.txt mismatch (got {len(actual_lines)} lines, expected {len(expected_index_lines)})")
 
     # no extra chunk files
-    actual_files = set(os.listdir(chunks_dir))
+    actual_files = {n for n in os.listdir(chunks_dir) if not _is_dotted(n)}
     expected_files = {f"chunk_{i:03d}.txt" for i in range(1, len(chunks) + 1)} | {"index.txt"}
     if actual_files != expected_files:
         extra = actual_files - expected_files

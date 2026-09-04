@@ -10,6 +10,11 @@ def fail(msg):
     sys.exit(1)
 
 
+def _is_dotted(name):
+    """True if a path component (file or dir name) starts with a dot."""
+    return name.startswith(".")
+
+
 def main():
     if len(sys.argv) < 2:
         fail("usage: check.py <workdir>")
@@ -31,7 +36,8 @@ def main():
 
     try:
         actual_names = set(
-            n for n in os.listdir(workdir) if os.path.isfile(os.path.join(workdir, n))
+            n for n in os.listdir(workdir)
+            if not _is_dotted(n) and os.path.isfile(os.path.join(workdir, n))
         )
     except Exception as e:
         fail(f"cannot list workdir: {e}")

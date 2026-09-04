@@ -3,11 +3,18 @@ import os
 import sys
 
 
+def _is_dotted(name):
+    return name.startswith(".")
+
+
 def main():
     workdir = sys.argv[1]
     by_hash = {}
     for root, dirs, fnames in os.walk(workdir):
+        dirs[:] = [d for d in dirs if not _is_dotted(d)]
         for fn in fnames:
+            if _is_dotted(fn):
+                continue
             full = os.path.join(root, fn)
             rel = os.path.relpath(full, workdir).replace(os.sep, "/")
             with open(full, "rb") as f:

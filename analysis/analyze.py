@@ -503,6 +503,74 @@ def empirical_flip_probability(task_list, modelA, modelB, cells_full, k, rng, n_
     }
 
 
+def disagreement_probability(task_list, modelA, modelB, cells_full, k, rng, n_iterations,
+                              ci_bootstrap=1000):
+    """Probability that two INDEPENDENT evaluations of the same two models
+    disagree about which model is ahead.
+
+    Unlike the leaderboard-flip probability above (which resamples a single
+    evaluation and compares it against a winner *read off the same pooled
+    sample*, and is therefore biased downward -- the sample that sets the
+    label can't also flip against itself), this draws two wholly separate
+    bootstrap resamples per iteration -- each with its own k freshly-drawn
+    occasions per (task, model) cell, drawn independently of the other
+    evaluation -- and asks whether the two evaluations, which share no
+    randomness, name different winners. This is the right quantity for
+    'if I ran this eval twice, would I get the same leaderboard ordering
+    both times', including the no-true-gap case where the pooled-winner
+    label is itself just noise and the flip probability against it is
+    misleadingly low by construction.
+
+    Returns disagreement_rate, tie_rate_either_evaluation (either of the
+    two evaluations was an exact tie), and a nonparametric bootstrap 95% CI
+    on the disagreement rate (resampling the n_iterations 0/1 disagreement
+    indicators with replacement, ci_bootstrap times)."""
+    cellA = {t: [1 if r.get("passed") else 0 for r in cells_full.get((t, modelA), [])] for t in task_list}
+    cellB = {t: [1 if r.get("passed") else 0 for r in cells_full.get((t, modelB), [])] for t in task_list}
+    if any(len(v) == 0 for v in cellA.values()) or any(len(v) == 0 for v in cellB.values()):
+        return None
+
+    def eval_once():
+        avgA = sum(rng.choice(cellA[t]) for t in task_list) / len(task_list) if k == 1 else \
+            mean([mean([rng.choice(cellA[t]) for _ in range(k)]) for t in task_list])
+        avgB = sum(rng.choice(cellB[t]) for t in task_list) / len(task_list) if k == 1 else \
+            mean([mean([rng.choice(cellB[t]) for _ in range(k)]) for t in task_list])
+        if avgA > avgB:
+            return 1
+        if avgB > avgA:
+            return -1
+        return 0
+
+    flags = [0] * n_iterations
+    ties = 0
+    for i in range(n_iterations):
+        w1 = eval_once()
+        w2 = eval_once()
+        if w1 == 0 or w2 == 0:
+            ties += 1
+        flags[i] = 1 if w1 != w2 else 0
+
+    n = n_iterations
+    rate = sum(flags) / n
+    tie_rate = ties / n
+
+    boot_rates = []
+    for _ in range(ci_bootstrap):
+        s = 0
+        for _ in range(n):
+            s += flags[rng.randrange(n)]
+        boot_rates.append(s / n)
+    ci = percentile_ci(boot_rates)
+
+    return {
+        "disagreement_rate": rate,
+        "tie_rate_either_evaluation": tie_rate,
+        "n_iterations": n,
+        "ci_bootstrap_replicates": ci_bootstrap,
+        "ci_95_bootstrap": ci,
+    }
+
+
 # --------------------------------------------------------------------------
 # Test-retest split-half
 # --------------------------------------------------------------------------
@@ -635,6 +703,11 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--bootstrap", type=int, default=10000)
     ap.add_argument("--seed", type=int, default=20260904)
+    ap.add_argument("--disagreement-iterations", type=int, default=10000,
+                     help="Iterations for disagreement_probability (two independent evaluations per "
+                          "iteration). Must be >=10000 for a real run; selftest may lower it for speed.")
+    ap.add_argument("--disagreement-ci-bootstrap", type=int, default=1000,
+                     help="Bootstrap replicates for the CI on the disagreement rate.")
     args = ap.parse_args()
 
     runs = load_runs(args.runs)
@@ -778,6 +851,51 @@ def main():
             smallest_k_flip_below_05[pair_key] = f">{max(ks_for_flip)} (not reached within the k table computed)"
         else:
             smallest_k_flip_below_05[pair_key] = found
+
+        # p_correct_ordering(k): fraction of single evaluations at k runs whose
+        # winner matches the full-data pooled winner (= favorite, by
+        # construction of favorite/underdog above). This is read directly off
+        # the flip-probability table already computed: P(correct) =
+        # P(favorite wins) = 1 - P(flip) - P(tie), and the exact/mc entries
+        # already carry p_a_higher = P(favorite wins).
+        p_correct = {1: exact["p_a_higher"] if exact else None}
+        p_correct.update({k: (mc[k]["p_a_higher"] if mc[k] else None) for k in ks_for_flip})
+        flip[pair_key]["p_correct_ordering"] = p_correct
+
+    # ---------------- Disagreement probability (two independent evals) ----------------
+    disagreement = {}
+    rng_disagree = random.Random(args.seed + 4)
+    n_disagree_iterations = args.disagreement_iterations
+    if n_disagree_iterations < 10000:
+        print(f"WARNING: --disagreement-iterations={n_disagree_iterations} < 10000 "
+              "(fine for a quick selftest, not for a reported run).", file=sys.stderr)
+    smallest_k_disagreement_below_05 = {}
+    for (a, b) in model_pairs:
+        pair_key = f"{a}_vs_{b}"
+        favorite = flip[pair_key]["favorite_model"]
+        underdog = flip[pair_key]["underdog_model"]
+        per_k = {}
+        for k in ks_for_flip:
+            per_k[k] = disagreement_probability(
+                tasks_used, favorite, underdog, cells_full, k, rng_disagree, n_disagree_iterations,
+                ci_bootstrap=args.disagreement_ci_bootstrap)
+        disagreement[pair_key] = {
+            "favorite_model": favorite,
+            "underdog_model": underdog,
+            "per_k": per_k,
+        }
+        found = None
+        for k in sorted(per_k.keys()):
+            v = per_k[k]
+            rate = v["disagreement_rate"] if v else None
+            if rate is not None and rate < 0.05:
+                found = k
+                break
+        if found is None:
+            smallest_k_disagreement_below_05[pair_key] = (
+                f">{max(ks_for_flip)} (not reached within the k table computed)")
+        else:
+            smallest_k_disagreement_below_05[pair_key] = found
 
     # ---------------- Test-retest ----------------
     rng_split = random.Random(args.seed + 1)
@@ -923,8 +1041,47 @@ def main():
                                "the model with the lower true (observed) overall pass rate ('underdog') "
                                "comes out ahead of the model with the higher true pass rate ('favorite') "
                                "in a resampled comparison drops below 0.05. k=1 uses the exact closed-form "
-                               "value; k>1 uses the Monte Carlo table below.",
+                               "value; k>1 uses the Monte Carlo table below. NOTE: this is biased downward "
+                               "-- the favorite/underdog label is read off the very same pooled sample that "
+                               "gets resampled, so a comparison against its own label can only look better "
+                               "than a comparison against an independent, freshly-drawn evaluation. See "
+                               "disagreement_probability for the unbiased two-independent-evaluations version.",
                 "per_pair": smallest_k_flip_below_05,
+            },
+            "disagreement_smallest_k": {
+                "definition": "Smallest k at which disagreement_probability (two independent evaluations, "
+                               "see below) drops below 0.05.",
+                "per_pair": smallest_k_disagreement_below_05,
+            },
+            "three_estimators_smallest_k_side_by_side": {
+                "definition": (
+                    "Three different definitions of 'smallest k to rank the two models reliably', reported "
+                    "side by side per pair so they are not confused for the same quantity: "
+                    "(1) smallest_k_leaderboard_flip_below_0.05 -- smallest k where P(underdog beats "
+                    "favorite, favorite/underdog labeled from the same pooled sample being resampled) < "
+                    "0.05. Biased low: the label and the resample share their data. "
+                    "(2) smallest_k_disagreement_probability_below_0.05 -- smallest k where P(two "
+                    "independent freshly-drawn k-occasion evaluations of the same two models name "
+                    "different winners) < 0.05. Not biased by shared-sample labeling; this is the number "
+                    "to trust for 'if I reran the eval, would I get the same answer'. "
+                    "(3) smallest_k_g_model_reaches_0.8_at_actual_n_tasks -- smallest k where the "
+                    "generalizability coefficient G_model(k, n_tasks) (pooled ANOVA variance components, "
+                    "reliability of the *whole model-level score*, not this specific pairwise comparison) "
+                    "reaches the conventional 0.8 threshold, at the actual number of tasks used "
+                    f"(n_tasks={T}). This one is per-corpus, not per-pair, so the same value is repeated "
+                    "for every pair below. If any of the three is not reachable within the k table "
+                    "computed (k=1..%d here), that is reported explicitly with a reason instead of a "
+                    "number -- see the reason fields in leaderboard_flip_smallest_k, "
+                    "disagreement_smallest_k, and g_model_smallest_k_at_actual_n_tasks above."
+                ) % max(ks_for_flip),
+                "per_pair": {
+                    pair_key: {
+                        "smallest_k_leaderboard_flip_below_0.05": smallest_k_flip_below_05[pair_key],
+                        "smallest_k_disagreement_probability_below_0.05": smallest_k_disagreement_below_05[pair_key],
+                        "smallest_k_g_model_reaches_0.8_at_actual_n_tasks": d_study_model,
+                    }
+                    for pair_key in flip.keys()
+                },
             },
         },
         "leaderboard_flip_probability": {
@@ -935,8 +1092,29 @@ def main():
                            "'exact_k1' is computed in closed form (DP convolution of independent per-task "
                            "Bernoulli draws at the observed cell pass rate) rather than by Monte Carlo, "
                            "since k=1 resampling from a cell is exactly Bernoulli(observed cell pass rate). "
-                           "'monte_carlo' entries use --bootstrap resamples, seeded.",
+                           "'monte_carlo' entries use --bootstrap resamples, seeded. "
+                           "'p_correct_ordering' per pair/k is read directly off this same table: the "
+                           "fraction of single evaluations at k runs whose winner matches the full-data "
+                           "pooled winner (= the favorite, by construction) -- reported plainly, with the "
+                           "caveat that the 'full-data pooled winner' it is checked against is itself only "
+                           "an estimate (from finitely many collected runs), not a known ground truth.",
             "pairs": flip,
+        },
+        "disagreement_probability": {
+            "definition": "The probability that two INDEPENDENT evaluations of the same two models -- "
+                           "each drawing its own k freshly-drawn occasions per (task, model) cell via "
+                           "bootstrap resampling, with the two evaluations' resamples drawn independently "
+                           "of each other -- disagree about which model is ahead. Each evaluation computes "
+                           "a model-level mean (unweighted mean over tasks) for each model from its own k "
+                           "occasions, then names a winner (or a tie). Unlike leaderboard_flip_probability, "
+                           "neither evaluation's winner is treated as ground truth to compare the other "
+                           "against, so this is not biased downward by a shared-sample label. "
+                           f"n_iterations={n_disagree_iterations} per k (>=10000, seeded at "
+                           f"seed+4={args.seed + 4}). tie_rate_either_evaluation is the rate at which "
+                           "either of the two evaluations came out an exact tie. ci_95_bootstrap is a "
+                           "nonparametric bootstrap 95% interval on the disagreement rate (resampling the "
+                           "n_iterations 0/1 disagreement indicators with replacement).",
+            "pairs": disagreement,
         },
         "test_retest": {
             "odd_even_split": {"per_model": per_model_oe, "pooled": pooled_oe},
@@ -979,12 +1157,28 @@ def main():
         print(f"  G_task smallest k, model={m}: {d_study_task[m]}")
     print(f"  G_model smallest k (n_tasks={T}): {d_study_model}")
     print()
+    print("-- D-study: three smallest-k estimators side by side --")
+    for pair_key, v in flip.items():
+        print(f"  {pair_key}:")
+        print(f"    smallest_k leaderboard_flip<0.05        = {smallest_k_flip_below_05.get(pair_key)}")
+        print(f"    smallest_k disagreement_probability<0.05 = {smallest_k_disagreement_below_05.get(pair_key)}")
+        print(f"    smallest_k G_model(k,n_tasks={T})>=0.8    = {d_study_model}")
+    print()
     print("-- Leaderboard flip probability (exact k=1, underdog beats favorite) --")
     for pair_key, v in flip.items():
         print(f"  {pair_key}: underdog={v['underdog_model']}  "
               f"P(flip)={fmt(v['exact_k1_flip_probability_underdog_wins'])}  "
               f"tie={fmt(v['exact_k1_tie_probability'])}  "
               f"smallest_k(P<0.05)={smallest_k_flip_below_05.get(pair_key)}")
+    print()
+    print("-- Disagreement probability (two independent evaluations, k=1) --")
+    for pair_key, v in disagreement.items():
+        d1 = v["per_k"].get(1)
+        print(f"  {pair_key}: P(disagree)={fmt(d1['disagreement_rate']) if d1 else 'NA'}  "
+              f"tie_rate={fmt(d1['tie_rate_either_evaluation']) if d1 else 'NA'}  "
+              f"95% CI={fmt(d1['ci_95_bootstrap']['lo']) if d1 else 'NA'}-"
+              f"{fmt(d1['ci_95_bootstrap']['hi']) if d1 else 'NA'}  "
+              f"smallest_k(P<0.05)={smallest_k_disagreement_below_05.get(pair_key)}")
     print()
     print("-- Test-retest (odd/even split, pooled) --")
     print(f"  Pearson r={fmt(pooled_oe['pearson_r'])}  Spearman rho={fmt(pooled_oe['spearman_rho'])}  "

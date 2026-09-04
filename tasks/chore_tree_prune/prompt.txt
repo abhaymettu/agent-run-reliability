@@ -2,7 +2,8 @@ The current directory contains a tree of files and a file "meta.json" at the
 top level. "meta.json" is a JSON object mapping each file's path (relative
 to the current directory, "/"-separated) to that file's age in days as an
 integer. Every file in the tree has an entry in "meta.json"; "meta.json"
-itself is not a tree file and has no age.
+itself is not a tree file and has no age. Ignore any file or directory whose
+name begins with a dot; it is not part of the tree and must be left alone.
 
 Remove a file if any of the following conditions hold (a file is removed if
 it matches at least one):

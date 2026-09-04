@@ -1,44 +1,68 @@
 # Status
 
-Last updated: 2026-09-04 00:28 EDT
+Last updated 2026-09-04 00:50 EDT.
 
-## Where things stand
+## What this is
 
-Phase: build. Nothing has been run on the grid yet.
+A study of how many independent runs an agent evaluation needs before a score,
+or a ranking between two models, means anything. One run is treated as a
+measurement occasion and the pass/fail variance is decomposed into model, task,
+model x task, and residual between-run components. `README.md` describes the
+apparatus, `REPORT.md` will hold the findings.
 
-Done:
-- Repo created and pushed: github.com/abhaymettu/agent-run-reliability (private).
-- Environment probed. The `claude` binary is at `/Users/abhay/.local/bin/claude`
-  (`claude` on the shell is a zsh function, not the binary). Model aliases
-  `haiku`, `sonnet` and `opus` all resolve: `haiku` -> claude-haiku-4-5,
-  `sonnet` -> claude-sonnet-5, `opus` -> claude-opus-5. Subjects are therefore
-  sonnet and haiku, as originally planned, at the full run count.
-- The subject invocation shape is verified end to end on a toy task: cwd set to
-  a clean workdir, `-p --model X --strict-mcp-config --mcp-config <file>
-  --allowedTools "Bash Read Write Edit Glob Grep" --max-turns 40 --output-format
-  json`. No permission denials, trivial task solved in 7.7 s at $0.033 on haiku.
-- Contract specs written: `docs/TASK_CONTRACT.md`, `docs/RUN_SCHEMA.md`.
+## Where it stands
 
-In flight (six parallel build agents):
-- 24 tasks in four categories, 6 each: xform, codefix, chore, arith.
-- `harness/run_grid.py` and `tools/validate_tasks.py`.
-- `analysis/analyze.py` and `analysis/selftest.py`.
+Built and verified:
 
-## Target design
+- 24 tasks in four categories of six, all passing `tools/validate_tasks.py`.
+- `harness/run_grid.py`, the concurrent subprocess runner, with append-and-fsync
+  checkpointing and resume-by-skipping-completed-cells.
+- `analysis/analyze.py` and `analysis/selftest.py`, standard library only, three
+  synthetic scenarios recovering known variance components.
 
-24 tasks x 8 runs x 2 models (sonnet, haiku) = 384 runs, 4 concurrent, 300 s
-timeout per run. Queue ordered by run_index so an interrupt leaves a balanced
-design. Fallback if throughput after the first hour will not finish by 06:00:
-shrink to 16 tasks x 6 runs before dropping a model or going unbalanced.
+Not done:
 
-## Known caveats to carry into the report
+- The 384-run grid. It has not produced a usable record yet.
+- The analysis run, `REPORT.md`, and the final numbers.
 
-Subject sessions inherit the operator's global CLAUDE.md and SessionStart hook
-output; an isolated `CLAUDE_CONFIG_DIR` loses authentication and `--settings`
-does not suppress hooks, so this contamination could not be removed. It is
-constant in form across every cell.
+## The pilot that was discarded
+
+The grid was launched at 00:38 and killed at 00:47 after 59 runs. A session
+hook on the host machine writes a hidden `.remember/` directory into the
+working directory of every `claude -p` subject session. Four of the six
+`chore_*` tasks enumerate the whole working tree, so that directory appeared in
+their end state and their checkers rejected correct agent work. Those four
+tasks scored zero across both models for that reason alone.
+
+The tasks are being changed to ignore dot-prefixed paths, in the checkers, in
+the reference solutions, and in the prompts. Because the instrument changed, the
+59 runs collected before the change are discarded rather than pooled with what
+follows; they sit in `results/discarded/` with a note. The grid restarts from
+zero.
+
+`tools/validate_tasks.py` is being extended to plant a fake `.remember/`
+directory and assert that a solved working directory still passes, so this
+failure mode cannot return silently.
+
+Two facts from the pilot are worth keeping. Pass rates over its first 41 runs
+were 18/22 for sonnet and 15/19 for haiku, far enough off ceiling that the
+battery carries reliability information. Per-run wall time ranged from about 8
+to about 236 seconds, and 59 runs completed in 9 minutes at concurrency 4, so
+the full grid is comfortably inside the time budget.
 
 ## Next
 
-Wait on the build agents, validate all 24 tasks, pilot one run per cell, then
-launch the grid.
+1. Finish and verify the dot-path fix across all affected tasks.
+2. Restart the full grid, 24 x 2 x 8.
+3. Run the analysis, write `REPORT.md`.
+
+## Known limitations, to be stated in the report
+
+Subject sessions cannot be isolated from the operator's global configuration on
+this machine. `CLAUDE_CONFIG_DIR` pointed at a fresh directory loses
+authentication, `--settings '{"hooks":{}}'` does not actually suppress hooks,
+and `--bare` skips hooks but requires an API key that is not available here.
+Every subject session therefore inherits the same global instructions and
+session-hook output. This is constant in form across every cell of the design,
+so it does not confound the model comparison, but it does mean the absolute
+pass rates describe agents in this environment rather than agents in general.

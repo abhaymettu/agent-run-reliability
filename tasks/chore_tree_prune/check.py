@@ -10,6 +10,11 @@ def fail(msg):
     sys.exit(1)
 
 
+def _is_dotted(name):
+    """True if a path component (file or dir name) starts with a dot."""
+    return name.startswith(".")
+
+
 def main():
     if len(sys.argv) < 2:
         fail("usage: check.py <workdir>")
@@ -44,7 +49,10 @@ def main():
     # exact set of tree files present (excluding meta.json / report.txt)
     actual_tree_files = set()
     for root, dirs, fnames in os.walk(workdir):
+        dirs[:] = [d for d in dirs if not _is_dotted(d)]
         for fn in fnames:
+            if _is_dotted(fn):
+                continue
             full = os.path.join(root, fn)
             rel = os.path.relpath(full, workdir).replace(os.sep, "/")
             if rel in ("meta.json", "report.txt"):
@@ -58,6 +66,7 @@ def main():
     # directories: exactly the surviving dirs must exist, all others pruned
     all_dirs_seen = set()
     for root, dirs, fnames in os.walk(workdir):
+        dirs[:] = [d for d in dirs if not _is_dotted(d)]
         for d in dirs:
             full = os.path.join(root, d)
             rel = os.path.relpath(full, workdir).replace(os.sep, "/")

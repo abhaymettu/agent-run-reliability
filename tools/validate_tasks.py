@@ -45,6 +45,19 @@ def snapshot_tree(root):
     return snap
 
 
+# The host machine writes a hidden .remember/ directory into the working
+# directory of every subject session. A task whose checker enumerates the tree
+# must ignore dot-prefixed paths or it will fail correct work. plant_dotdir
+# reproduces that directory so the assertion below tests the real condition.
+def plant_dotdir(root):
+    d = os.path.join(root, ".remember", "logs")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(root, ".remember", ".gitignore"), "w") as f:
+        f.write("*\n")
+    with open(os.path.join(d, "hook-errors.log"), "w") as f:
+        f.write("hook wrote this\n" * 3)
+
+
 class TaskFailure(Exception):
     pass
 
@@ -120,6 +133,21 @@ def check_task(task_dir, task_id):
         r = run([sys.executable, check_py, solved])
         if r.returncode != 0:
             raise TaskFailure(f"check.py failed after solution.py: {r.stdout.decode(errors='replace')[:300]}")
+
+        # The solved direction again, with the host's hidden .remember/
+        # directory present, which is the state every real run sees.
+        contam = os.path.join(tmp_base, "contaminated")
+        os.makedirs(contam)
+        r = run([sys.executable, setup_py, contam])
+        if r.returncode != 0:
+            raise TaskFailure(f"setup.py failed (contaminated): {r.stdout.decode(errors='replace')[:300]}")
+        plant_dotdir(contam)
+        r = run([sys.executable, solution_py, contam])
+        if r.returncode != 0:
+            raise TaskFailure(f"solution.py failed with .remember/ present: {r.stdout.decode(errors='replace')[:300]}")
+        r = run([sys.executable, check_py, contam])
+        if r.returncode != 0:
+            raise TaskFailure(f"check.py rejected a solved workdir because of .remember/: {r.stdout.decode(errors='replace')[:300]}")
 
         warning = None
         if sol_time > 20:

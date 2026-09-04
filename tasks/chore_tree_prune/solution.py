@@ -12,6 +12,10 @@ def _ext(name):
     return "." + name.rsplit(".", 1)[-1] if "." in name else ""
 
 
+def _is_dotted(name):
+    return name.startswith(".")
+
+
 def should_remove(name, size, age_days):
     ext = _ext(name)
     if age_days > AGE_LIMIT and ext in AGE_EXTS:
@@ -31,7 +35,10 @@ def main():
     removed = []
     survived = []
     for root, dirs, fnames in os.walk(workdir):
+        dirs[:] = [d for d in dirs if not _is_dotted(d)]
         for fn in fnames:
+            if _is_dotted(fn):
+                continue
             full = os.path.join(root, fn)
             rel = os.path.relpath(full, workdir).replace(os.sep, "/")
             if rel in ("meta.json", "report.txt"):
@@ -47,6 +54,9 @@ def main():
     # prune now-empty directories, bottom-up
     for root, dirs, fnames in os.walk(workdir, topdown=False):
         if os.path.abspath(root) == os.path.abspath(workdir):
+            continue
+        rel_root = os.path.relpath(root, workdir).replace(os.sep, "/")
+        if any(_is_dotted(part) for part in rel_root.split("/")):
             continue
         if not os.listdir(root):
             os.rmdir(root)

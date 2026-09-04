@@ -1,0 +1,17 @@
+grid: 24 tasks x 2 models x 8 runs = 384 cells; 0 already done; 384 queued
+[    9.9s] 1/384 arith_group_median sonnet run=0 PASS dur=9.8s eta=3800s
+[   17.9s] 2/384 arith_modular_seq sonnet run=0 PASS dur=13.6s eta=3419s
+[   20.5s] 3/384 arith_group_median haiku run=0 PASS dur=18.3s eta=2599s
+[   27.0s] 4/384 arith_pairwise_corr sonnet run=0 PASS dur=16.9s eta=2563s
+[   30.1s] 5/384 arith_modular_seq haiku run=0 PASS dur=23.6s eta=2278s
+[   37.2s] 6/384 arith_percentile sonnet run=0 PASS dur=16.7s eta=2344s
+[   38.9s] 7/384 arith_pairwise_corr haiku run=0 PASS dur=21.0s eta=2097s
+[   40.1s] 8/384 arith_running_balance sonnet run=0 PASS dur=10.0s eta=1885s
+[   49.2s] 9/384 arith_weighted_score sonnet run=0 PASS dur=10.2s eta=2051s
+[   54.3s] 10/384 arith_percentile haiku run=0 PASS dur=27.2s eta=2031s
+[   58.6s] 11/384 arith_weighted_score haiku run=0 PASS dur=18.4s eta=1987s
+[   72.7s] 12/384 chore_archive_split sonnet run=0 PASS dur=23.4s eta=2252s
+[   75.3s] 13/384 chore_dedupe_files sonnet run=0 PASS dur=16.6s eta=2149s
+[   79.6s] 14/384 chore_archive_split haiku run=0 PASS dur=25.3s eta=2104s
+[   92.5s] 15/384 chore_file_organize sonnet run=0 PASS dur=17.2s eta=2275s
+[   99.0s] 16/384 arith_running_balance haiku run=0 FAIL dur=61.8s eta=2278s

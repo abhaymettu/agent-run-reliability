@@ -10,6 +10,11 @@ def fail(msg):
     sys.exit(1)
 
 
+def _is_dotted(name):
+    """True if a path component (file or dir name) starts with a dot."""
+    return name.startswith(".")
+
+
 def main():
     if len(sys.argv) < 2:
         fail("usage: check.py <workdir>")
@@ -38,7 +43,10 @@ def main():
     # walk actual tree, collect actual file relpaths (posix-style)
     actual_files = {}
     for root, dirs, fnames in os.walk(workdir):
+        dirs[:] = [d for d in dirs if not _is_dotted(d)]
         for fn in fnames:
+            if _is_dotted(fn):
+                continue
             if fn == "manifest.txt" and os.path.abspath(root) == os.path.abspath(workdir):
                 continue
             full = os.path.join(root, fn)

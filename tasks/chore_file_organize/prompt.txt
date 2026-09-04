@@ -1,6 +1,8 @@
 The current directory contains a flat set of files. Sort every file into a
 subdirectory of the current directory, named by category, by moving it
-there (do not leave a copy behind and do not rename the file itself).
+there (do not leave a copy behind and do not rename the file itself). Ignore
+any file or directory whose name begins with a dot; it is not part of this
+task.
 
 Category rules, in order:
 

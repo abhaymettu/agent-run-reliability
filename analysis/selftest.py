@@ -88,10 +88,13 @@ def generate_runs(path, n_tasks, models, n_occasions, task_sd, model_logit_gap,
     return tasks, m_list, task_effect, intercepts
 
 
-def run_analyze(runs_path, out_path, seed, bootstrap=2000):
+def run_analyze(runs_path, out_path, seed, bootstrap=2000, disagreement_iterations=2000,
+                 disagreement_ci_bootstrap=300):
     r = subprocess.run(
         [sys.executable, ANALYZE, "--runs", runs_path, "--out", out_path,
-         "--bootstrap", str(bootstrap), "--seed", str(seed)],
+         "--bootstrap", str(bootstrap), "--seed", str(seed),
+         "--disagreement-iterations", str(disagreement_iterations),
+         "--disagreement-ci-bootstrap", str(disagreement_ci_bootstrap)],
         capture_output=True, text=True,
     )
     return r
@@ -130,6 +133,13 @@ def scenario_1_large_gap_low_noise(tmpdir):
     pair = next(iter(flip_pairs.values()))
     p1 = pair["exact_k1_flip_probability_underdog_wins"]
     check(p1 is not None and p1 < 0.15, f"exact k=1 flip probability is low ({p1})", failures)
+
+    disagree_pairs = d["disagreement_probability"]["pairs"]
+    dpair = next(iter(disagree_pairs.values()))
+    d1 = dpair["per_k"]["1"]["disagreement_rate"]
+    check(d1 is not None and d1 < 0.2,
+          f"disagreement_probability at k=1 is also low, agreeing with the flip probability when the "
+          f"true gap is real ({d1})", failures)
     return failures
 
 
@@ -157,6 +167,9 @@ def scenario_2_no_gap_high_noise(tmpdir):
     n_reps = 8
     winners = []
     sigma2_models = []
+    flip_p1s = []
+    disagree_p1s = []
+    disagree_p8s = []
     failures = []
     for rep in range(n_reps):
         seed = 202 + rep
@@ -164,7 +177,8 @@ def scenario_2_no_gap_high_noise(tmpdir):
         out_path = os.path.join(tmpdir, f"s2_results_{rep}.json")
         generate_runs(runs_path, n_tasks=14, models=["sonnet", "haiku"], n_occasions=8,
                       task_sd=0.5, model_logit_gap=0.0, occasion_noise_sd=1.5, seed=seed)
-        r = run_analyze(runs_path, out_path, seed=seed, bootstrap=500)
+        r = run_analyze(runs_path, out_path, seed=seed, bootstrap=500,
+                         disagreement_iterations=3000, disagreement_ci_bootstrap=300)
         check(r.returncode == 0, f"rep {rep}: analyze.py exits 0 (stderr: {r.stderr[-400:]})", failures)
         if r.returncode != 0:
             continue
@@ -172,10 +186,17 @@ def scenario_2_no_gap_high_noise(tmpdir):
         pr = d["descriptives"]["per_model"]
         winners.append("sonnet" if pr["sonnet"]["pass_rate"] >= pr["haiku"]["pass_rate"] else "haiku")
         sigma2_models.append(d["anova"]["variance_components_truncated_at_zero"]["model"])
+        flip_pairs = d["leaderboard_flip_probability"]["pairs"]
+        pair = next(iter(flip_pairs.values()))
+        p1 = pair["exact_k1_flip_probability_underdog_wins"]
+        flip_p1s.append(p1)
+        disagree_pairs = d["disagreement_probability"]["pairs"]
+        dpair = next(iter(disagree_pairs.values()))
+        dp1 = dpair["per_k"]["1"]["disagreement_rate"]
+        dp8 = dpair["per_k"]["8"]["disagreement_rate"]
+        disagree_p1s.append(dp1)
+        disagree_p8s.append(dp8)
         if rep == 0:
-            flip_pairs = d["leaderboard_flip_probability"]["pairs"]
-            pair = next(iter(flip_pairs.values()))
-            p1 = pair["exact_k1_flip_probability_underdog_wins"]
             check(p1 is not None and 0.0 <= p1 <= 0.5,
                   f"rep 0: exact k=1 flip probability is a valid probability <=0.5 by construction ({p1})",
                   failures)
@@ -187,6 +208,31 @@ def scenario_2_no_gap_high_noise(tmpdir):
     mean_sm = sum(sigma2_models) / len(sigma2_models) if sigma2_models else None
     check(mean_sm is not None and mean_sm < 0.05,
           f"mean recovered sigma2_model across replications is near zero ({mean_sm})", failures)
+
+    # The key contrast this scenario exists to demonstrate: with no true gap,
+    # the existing (biased) flip probability is misleadingly LOW within any
+    # single sample (it's checked against a winner label drawn from that same
+    # sample, so it can't help but look confident), while disagreement_probability
+    # -- which compares two wholly independent evaluations sharing no data --
+    # correctly reports that the two subjects are near-indistinguishable: near
+    # 0.5 at k=1, and NOT collapsing toward 0 as k grows the way the flip
+    # probability would (more occasions per cell sharpens each evaluation's own
+    # estimate, but with zero true gap that just makes the coin flip fairer,
+    # not more decisive).
+    mean_flip_p1 = sum(v for v in flip_p1s if v is not None) / len(flip_p1s) if flip_p1s else None
+    mean_disagree_p1 = sum(v for v in disagree_p1s if v is not None) / len(disagree_p1s) if disagree_p1s else None
+    mean_disagree_p8 = sum(v for v in disagree_p8s if v is not None) / len(disagree_p8s) if disagree_p8s else None
+    check(mean_flip_p1 is not None and mean_flip_p1 < 0.35,
+          f"mean exact k=1 flip probability across reps is misleadingly low, as expected when it's "
+          f"checked against a winner label drawn from the same sample ({mean_flip_p1})", failures)
+    check(mean_disagree_p1 is not None and 0.35 <= mean_disagree_p1 <= 0.65,
+          f"mean disagreement_probability at k=1 across reps is near 0.5, correctly reflecting no true "
+          f"gap where the biased flip probability above was misleadingly low ({mean_disagree_p1})",
+          failures)
+    check(mean_disagree_p8 is not None and mean_disagree_p8 > 0.30,
+          f"disagreement_probability stays high (does not collapse toward 0) even at k=8, since two "
+          f"independent evaluations of two truly-tied subjects keep disagreeing regardless of how many "
+          f"occasions each draws on ({mean_disagree_p8})", failures)
     return failures
 
 
@@ -212,6 +258,16 @@ def scenario_3_ceiling(tmpdir):
     pr = d["descriptives"]["per_model"]
     for m, v in pr.items():
         check(v["pass_rate"] == 1.0, f"pass_rate for {m} is exactly 1.0", failures)
+
+    disagree_pairs = d["disagreement_probability"]["pairs"]
+    dpair = next(iter(disagree_pairs.values()))
+    d1 = dpair["per_k"]["1"]
+    check(d1["disagreement_rate"] == 0.0,
+          f"degenerate all-pass data: disagreement_rate is exactly 0.0 ({d1['disagreement_rate']})",
+          failures)
+    check(d1["tie_rate_either_evaluation"] == 1.0,
+          f"degenerate all-pass data: every evaluation ties, tie_rate is exactly 1.0 "
+          f"({d1['tie_rate_either_evaluation']})", failures)
     return failures
 
 

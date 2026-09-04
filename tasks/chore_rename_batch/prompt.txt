@@ -1,6 +1,7 @@
 The current directory contains a flat set of files. Each file's content
 starts with a line of the form "SEQ: <n>" where <n> is a non-negative
-integer.
+integer. Ignore any file or directory whose name begins with a dot; it is
+not part of this task.
 
 Rename every file (in place, in the current directory) to:
 
