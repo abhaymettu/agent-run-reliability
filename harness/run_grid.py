@@ -20,7 +20,7 @@ import time
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
-CLAUDE_BIN = "/Users/abhay/.local/bin/claude"
+CLAUDE_BIN = shutil.which("claude") or "claude"
 EMPTY_MCP_CONFIG = os.path.join(SCRIPT_DIR, "empty-mcp.json")
 ALLOWED_TOOLS = "Bash Read Write Edit Glob Grep"
 
