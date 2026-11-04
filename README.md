@@ -10,9 +10,12 @@ the part that belongs to the task, the part that belongs to the pairing of the
 two, and the part that is left over between runs of the same model on the same
 task. The leftover part is what a single-run leaderboard reports as signal.
 
+![Run-to-run noise is half the variance; two single-run evaluations disagree on the winner 27.5% of the time, three runs per task bring that to 4.2%](docs/readme-figure.svg)
+
 `REPORT.md` holds the findings, and the write-up is at
 [abhaymettu.com/research/agent-run-reliability](https://www.abhaymettu.com/research/agent-run-reliability/).
-This file describes the apparatus.
+This file describes the apparatus. The figure is drawn from
+`results/analysis.json` by `python3 analysis/readme_figure.py`.
 
 ## Design
 
@@ -93,7 +96,7 @@ cluster bootstrap are all written out in `analysis/analyze.py`.
 ```
 tasks/          24 task directories
 harness/        run_grid.py, the subprocess runner
-analysis/       analyze.py, selftest.py, results.json
+analysis/       analyze.py, selftest.py, readme_figure.py, results.json
 tools/          validate_tasks.py, difficulty_report.py
 docs/           TASK_CONTRACT.md, RUN_SCHEMA.md, DIFFICULTY.md
 results/        the grid, and every dataset that did not become the grid
