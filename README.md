@@ -10,7 +10,9 @@ the part that belongs to the task, the part that belongs to the pairing of the
 two, and the part that is left over between runs of the same model on the same
 task. The leftover part is what a single-run leaderboard reports as signal.
 
-`REPORT.md` holds the findings. This file describes the apparatus.
+`REPORT.md` holds the findings, and the write-up is at
+[abhaymettu.com/research/agent-run-reliability](https://www.abhaymettu.com/research/agent-run-reliability/).
+This file describes the apparatus.
 
 ## Design
 
